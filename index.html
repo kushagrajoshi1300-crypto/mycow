@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Cow</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f6f4f">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Cow">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1c1c1a;--mute:#76746c;--line:#e4e2da;--acc:#2f6f4f;--accbg:#e1f0e8;--bad:#b4472f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--card:#201f1d;--ink:#eeece6;--mute:#9a978d;--line:#34332f;--acc:#6fcf9b;--accbg:#1f3a2c;--bad:#e8826a}}
+:root[data-theme="dark"]{--bg:#141413;--card:#201f1d;--ink:#eeece6;--mute:#9a978d;--line:#34332f;--acc:#6fcf9b;--accbg:#1f3a2c;--bad:#e8826a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:520px;margin:0 auto;padding:14px 14px 40px}
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.nav button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:20px}
+.nav .t{flex:1;text-align:center}
+.t b{display:block;font-size:18px}.t span{font-size:13px;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:6px 0 12px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.chk{display:flex;align-items:center;gap:12px;width:100%;padding:12px;margin:0 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;text-align:left}
+.chk:last-child{margin:0}
+.chk .box{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-weight:700;color:transparent}
+.chk.on{background:var(--accbg);border-color:var(--acc)}
+.chk.on .box{background:var(--acc);border-color:var(--acc);color:var(--card)}
+.chk small{display:block;color:var(--mute);font-size:12px}
+.chk .s{margin-left:auto;font-size:13px;color:var(--acc);white-space:nowrap}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{display:block;font-size:12px;color:var(--mute)}
+input,textarea{width:100%;margin-top:3px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:70px;resize:vertical}
+.hint{font-size:12px;color:var(--mute);margin-top:6px}
+.cal{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}
+.cal button{aspect-ratio:1;border:0;border-radius:4px;background:var(--line);padding:0}
+.cal .l1{background:#a9d5bd}.cal .l2{background:#6fb590}.cal .l3{background:#3f8f67}.cal .l4{background:var(--acc)}
+.cal .cur{outline:2px solid var(--ink)}.cal .fut{opacity:.35}
+.row{display:flex;gap:8px;margin-top:8px}
+.row button,.mini{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.tabs{display:flex;gap:6px;margin-bottom:12px}.tabs button{flex:1;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:600}.tabs button.on{background:var(--acc);color:var(--card);border-color:var(--acc)}
+svg.sc{width:100%;height:auto;border-radius:14px;display:block;border:1px solid var(--line);margin-bottom:12px}
+svg.sc *{transform-box:fill-box}
+@keyframes br{50%{transform:scaleY(1.025)}}@keyframes tl{50%{transform:rotate(14deg)}}
+@keyframes bl{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes fl{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-45px);opacity:0}}
+@keyframes pt{0%{transform:translate(0,-10px)}100%{transform:translate(-50px,270px)}}
+@keyframes cd{to{transform:translateX(70px)}}
+.br{animation:br 3.2s ease-in-out infinite;transform-origin:50% 100%}
+.tl{animation:tl 1.8s ease-in-out infinite;transform-origin:100% 0%}
+.bl{animation:bl 4s infinite;transform-origin:50% 50%}
+.cl{animation:cd 40s linear infinite alternate}
+.hr{animation:fl 3s ease-out infinite}
+.q{padding:10px 0;border-bottom:1px solid var(--line)}.q:last-child{border:0}.q p{margin:0 0 3px}.q small{color:var(--mute)}
+.stat{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-top:6px}
+@keyframes hop{0%,100%{transform:translateY(0) scale(1,1)}30%{transform:translateY(-16px) scale(.97,1.05)}60%{transform:translateY(0) scale(1.05,.94)}}
+.hop{animation:hop .5s ease-out;transform-origin:50% 100%}
+.wrap{position:relative}.wrap svg.sc{margin-bottom:8px}
+#bub{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:86%;background:#fff;color:#2a2a28;border-radius:16px;padding:10px 14px;font-size:15px;box-shadow:0 2px 10px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .25s;text-align:center}
+#bub.on{opacity:1}
+#bub:after{content:"";position:absolute;left:50%;bottom:-8px;border:8px solid transparent;border-bottom:0;border-top-color:#fff}
+.talk{display:flex;gap:8px;margin-bottom:12px}.talk button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.talk button.pri{background:var(--acc);color:var(--card);border-color:var(--acc);font-weight:600}
+@keyframes rn{to{transform:translate(-14px,320px)}}@keyframes sn{0%{transform:translate(0,0)}50%{transform:translate(14px,160px)}100%{transform:translate(-6px,320px)}}
+@keyframes fz{0%,86%,100%{opacity:0}88%,92%{opacity:.85}90%{opacity:.1}}
+#wxb{position:absolute;left:8px;bottom:16px;border:0;border-radius:12px;padding:5px 10px;font-size:12px;background:rgba(255,255,255,.88);color:#2a2a28}
+</style>
+</head>
+<body>
+<main>
+<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">My Cow 🐄</button></div>
+<div id="pgT">
+  <div class="nav">
+    <button id="prev" aria-label="Previous day">‹</button>
+    <div class="t"><b id="date"></b><span id="day"></span></div>
+    <button id="next" aria-label="Next day">›</button>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+
+  <div class="card">
+    <h3>Daily ritual</h3>
+    <div id="checks"></div>
+  </div>
+
+  <div class="card">
+    <h3>Morning</h3>
+    <label>Body weight (kg)<input type="number" inputmode="decimal" step="0.1" data-k="wt"></label>
+  </div>
+
+  <div class="card">
+    <h3>Hours invested</h3>
+    <div class="grid">
+      <div><label>Deep work on my own thing (hrs)<input type="number" inputmode="decimal" step="0.25" data-k="hwork"></label></div>
+      <div><label>Learning / study (hrs)<input type="number" inputmode="decimal" step="0.25" data-k="hlearn"></label></div>
+    </div>
+    <div class="hint" id="hsum"></div>
+  </div>
+
+  <div class="card">
+    <h3>Food</h3>
+    <div class="grid">
+      <div><label>Calories (kcal)<input type="number" inputmode="decimal" data-k="cal"></label></div>
+      <div><label>Protein (g)<input type="number" inputmode="decimal" data-k="p"></label></div>
+      <div><label>Carbs (g)<input type="number" inputmode="decimal" data-k="c"></label></div>
+      <div><label>Fats (g)<input type="number" inputmode="decimal" data-k="f"></label></div>
+    </div>
+    <div class="hint" id="calc"></div>
+  </div>
+
+  <div class="card">
+    <h3>Mind &amp; growth</h3>
+    <div class="grid">
+      <div><label>Pages read<input type="number" inputmode="numeric" data-k="pages"></label></div>
+      <div><label>Writing (min)<input type="number" inputmode="numeric" data-k="write"></label></div>
+      <div><label>Sleep (hours)<input type="number" inputmode="decimal" data-k="sleep"></label></div>
+      <div><label>Urge level today (0–5)<input type="number" inputmode="numeric" min="0" max="5" data-k="urge"></label></div>
+      <div><label>Steps<input type="number" inputmode="numeric" data-k="steps"></label></div>
+    </div>
+    <label style="margin-top:8px">One thing I learned today<textarea data-k="learned"></textarea></label>
+    <label style="margin-top:8px">Triggers / notes (what came before any urge?)<textarea data-k="note"></textarea></label>
+  </div>
+
+  <div class="card">
+    <h3>Year view</h3>
+    <div class="cal" id="cal"></div>
+    <div class="hint">Darker = more ritual items done. Tap a day to open it.</div>
+    <div class="row"><button id="today">Jump to today</button><button id="bk">Backup / restore</button></div>
+    <div id="bkbox" hidden>
+      <textarea id="bkt" style="margin-top:8px;min-height:100px" placeholder="Backup data"></textarea>
+      <div class="row"><button id="exp">Export</button><button id="imp">Import</button></div>
+      <div class="hint">Data lives only in this browser on this phone. Export now and then and save the text somewhere safe.</div>
+    </div>
+  </div>
+</div>
+<div id="pgC" hidden>
+<div class="wrap"><div id="bub"></div><button id="wxb"></button><svg class="sc" id="scene" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Your cow in the Japanese countryside">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3f5"/><stop offset="1" stop-color="#fdf1e3"/></linearGradient></defs>
+<rect width="360" height="300" fill="url(#sky)"/>
+<circle id="sun" cx="305" cy="42" r="20" fill="#fff3c4"/>
+<g class="cl"><ellipse cx="60" cy="40" rx="34" ry="10" fill="#fff" opacity=".85"/><ellipse cx="85" cy="35" rx="22" ry="9" fill="#fff" opacity=".85"/></g>
+<polygon points="0,195 70,92 122,152 172,66 242,160 292,104 360,195" fill="#8da4c4"/>
+<g fill="#fff"><polygon points="54,114 70,92 86,117 71,110"/><polygon points="150,101 172,66 194,104 173,95"/><polygon points="276,126 292,104 308,128 293,120"/></g>
+<path d="M0,198 Q80,162 160,192 T360,182 V235 H0Z" fill="#7fb36a"/>
+<g><rect x="272" y="172" width="44" height="28" fill="#b5835a"/><polygon points="265,174 294,152 323,174" fill="#7a3b2e"/><rect x="278" y="182" width="9" height="18" fill="#5a3a22"/><rect x="296" y="180" width="10" height="9" fill="#ffe08a"/></g>
+<g fill="#2f6b45"><polygon points="20,205 32,168 44,205"/><polygon points="38,208 52,162 66,208"/><polygon points="328,208 340,172 352,208"/><polygon points="230,203 240,176 250,203"/></g>
+<rect y="214" width="360" height="90" fill="#8ccf6e"/><path d="M0,244 Q90,234 180,244 T360,242 V300 H0Z" fill="#7fc36b"/>
+<g><circle cx="30" cy="262" r="2.5" fill="#fff"/><circle cx="70" cy="275" r="2.5" fill="#ffd24d"/><circle cx="110" cy="258" r="2.5" fill="#c9a0ff"/><circle cx="150" cy="284" r="2.5" fill="#fff"/><circle cx="215" cy="272" r="2.5" fill="#ffd24d"/><circle cx="255" cy="260" r="2.5" fill="#fff"/><circle cx="300" cy="282" r="2.5" fill="#c9a0ff"/><circle cx="335" cy="265" r="2.5" fill="#ffd24d"/><circle cx="20" cy="288" r="2.5" fill="#ffd24d"/><circle cx="185" cy="290" r="2.5" fill="#fff"/></g>
+<rect id="nite" width="360" height="300" fill="#0b1535" opacity="0"/>
+<g id="stars" display="none" fill="#fff"><circle cx="40" cy="30" r="1.5"/><circle cx="110" cy="55" r="1.2"/><circle cx="170" cy="25" r="1.6"/><circle cx="230" cy="48" r="1.2"/><circle cx="330" cy="30" r="1.5"/><circle cx="270" cy="70" r="1"/><circle cx="300" cy="46" r="13" fill="#f5f3dc"/></g>
+<g id="cow" transform="translate(185 262)" style="cursor:pointer"><g id="hop">
+<ellipse cx="0" cy="2" rx="82" ry="8" fill="#000" opacity=".15"/>
+<g class="tl"><path d="M-70,-72 Q-92,-60 -88,-30" stroke="#f4efe6" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="-88" cy="-27" r="7" fill="#2b2b2b"/></g>
+<g fill="#e6dfd0"><rect x="-58" y="-38" width="14" height="38" rx="5"/><rect x="42" y="-38" width="14" height="38" rx="5"/></g>
+<g fill="#f7f3ea"><rect x="-40" y="-38" width="14" height="38" rx="5"/><rect x="26" y="-38" width="14" height="38" rx="5"/></g>
+<g fill="#333"><rect x="-58" y="-6" width="14" height="6" rx="2"/><rect x="42" y="-6" width="14" height="6" rx="2"/><rect x="-40" y="-6" width="14" height="6" rx="2"/><rect x="26" y="-6" width="14" height="6" rx="2"/></g>
+<g class="br"><ellipse cx="0" cy="-62" rx="76" ry="40" fill="#f7f3ea" stroke="#d9d2c3"/>
+<g fill="#2e2e2e"><ellipse cx="-30" cy="-78" rx="22" ry="14"/><ellipse cx="14" cy="-48" rx="18" ry="12"/><ellipse cx="-56" cy="-52" rx="12" ry="10"/></g>
+<ellipse cx="-12" cy="-26" rx="14" ry="7" fill="#f3b6b0"/></g>
+<g id="head">
+<g id="horns" stroke="#e8dcc0" stroke-width="5" fill="none" stroke-linecap="round"><path d="M56,-112 Q50,-128 60,-132"/><path d="M84,-112 Q90,-128 80,-132"/></g>
+<ellipse cx="40" cy="-100" rx="13" ry="6" fill="#2e2e2e" transform="rotate(-20 40 -100)"/><ellipse cx="100" cy="-100" rx="13" ry="6" fill="#2e2e2e" transform="rotate(20 100 -100)"/>
+<ellipse cx="70" cy="-92" rx="27" ry="25" fill="#f7f3ea" stroke="#d9d2c3"/>
+<ellipse cx="80" cy="-108" rx="10" ry="7" fill="#2e2e2e"/>
+<circle id="bl1" cx="51" cy="-84" r="6" fill="#f59fb0" opacity=".5"/><circle id="bl2" cx="89" cy="-84" r="6" fill="#f59fb0" opacity=".5"/>
+<ellipse cx="70" cy="-78" rx="17" ry="11" fill="#f6b5b0"/><circle cx="64" cy="-79" r="2" fill="#a8605f"/><circle cx="76" cy="-79" r="2" fill="#a8605f"/>
+<g id="eyes" class="bl"><circle cx="58" cy="-97" r="4" fill="#222"/><circle cx="82" cy="-97" r="4" fill="#222"/><circle cx="59" cy="-98" r="1.3" fill="#fff"/><circle cx="83" cy="-98" r="1.3" fill="#fff"/></g>
+<g id="hEyes" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round" display="none"><path d="M53,-95 Q58,-102 63,-95"/><path d="M77,-95 Q82,-102 87,-95"/></g>
+<g transform="translate(46 -113)"><circle cx="-5" cy="0" r="4" fill="#f78fb3"/><circle cx="5" cy="0" r="4" fill="#f78fb3"/><circle cx="0" cy="-5" r="4" fill="#f78fb3"/><circle cx="0" cy="5" r="4" fill="#f78fb3"/><circle r="3" fill="#ffd24d"/></g>
+<path d="M54,-67 Q70,-58 86,-67" stroke="#d6453d" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="70" cy="-60" r="5" fill="#ffc933" stroke="#c9961a"/>
+<g id="sEyes" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round" display="none"><path d="M53,-96 Q58,-91 63,-96"/><path d="M77,-96 Q82,-91 87,-96"/></g>
+<path id="mouth" d="M62,-71 Q70,-60 78,-71" stroke="#7a3f3c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</g></g></g>
+<g id="zz" display="none" fill="#5b6b8c" font-size="18" font-weight="700"><text class="hr" x="262" y="150">Z</text><text class="hr" x="278" y="134" style="animation-delay:1.2s">z</text></g>
+<g id="hearts" fill="#e8607a" font-size="14" text-anchor="middle"><text class="hr" x="250" y="170">♥</text><text class="hr" x="270" y="180" style="animation-delay:1s">♥</text><text class="hr" x="235" y="185" style="animation-delay:2s">♥</text></g>
+<g id="wx"><rect id="wdim" width="360" height="300" fill="#4a5568" opacity="0"/><rect id="wgr" y="244" width="360" height="56" fill="#fff" opacity="0"/><rect id="wfog" width="360" height="300" fill="#e8eef2" opacity="0"/>
+<g id="wcl" display="none" fill="#cfd6df" opacity=".9"><ellipse cx="120" cy="30" rx="50" ry="14"/><ellipse cx="160" cy="24" rx="34" ry="12"/><ellipse cx="260" cy="38" rx="56" ry="15"/><ellipse cx="300" cy="30" rx="34" ry="12"/></g>
+<g id="wp"></g><rect id="wfl" width="360" height="300" fill="#fff" opacity="0" display="none"/></g>
+</svg></div>
+<div class="talk"><button id="talk" class="pri">💬 Talk to me</button><button id="help">🫶 I'm struggling</button><button id="vox" style="flex:.55">🔇</button></div>
+<div class="card"><h3>Your cow</h3><b id="stage" style="font-size:18px"></b><div id="mood" class="hint" style="font-size:14px;margin:2px 0 8px"></div>
+<div class="bar" style="margin:0"><i id="hbar"></i></div>
+<div class="stat"><span id="s1"></span><span id="s2"></span><span id="s3"></span></div>
+<div class="hint">Your cow grows a little every day for a year. Its health follows your ticks: mostly the last 7 days, plus your overall record.</div></div>
+<div class="card"><h3>Today's 5 quotes</h3><div id="qs"></div></div>
+</div>
+</main>
+<script>
+(function(){
+var KEY="ritual-v1",START=new Date(2026,9,7),END=new Date(2027,9,7);
+var CHECKS=[
+ ["reels","Stayed off Reels / Shorts","No Instagram Reels, no YouTube Shorts"],
+ ["clean","Stayed clear of the private habit","Tick = a clean day"],
+ ["work","Worked out (lifting)",""],
+ ["cardio","Did cardio",""],
+ ["junk","No junk food",""],
+ ["read","Read today",""],
+ ["wrote","Wrote today",""],
+ ["phone","Phone out of bed by 11:30 PM–12 AM","Charge it away from the bed"]
+];
+var data={};
+try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+function pad(n){return n<10?"0"+n:""+n}
+function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
+function dayStart(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function clamp(d){d=dayStart(d);return d<START?START:d>END?END:d}
+var now=dayStart(new Date());
+var cur=clamp(now);
+var $=function(i){return document.getElementById(i)};
+function rec(k){return data[k]||(data[k]={})}
+function streak(f){
+  var d=cur>now?now:cur,n=0;
+  if(!(data[key(d)]||{})[f])d=addDays(d,-1);
+  while(d>=START&&(data[key(d)]||{})[f]){n++;d=addDays(d,-1)}
+  return n;
+}
+function render(){
+  var k=key(cur),r=data[k]||{};
+  $("date").textContent=cur.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  var n=Math.round((cur-START)/864e5)+1,tot=Math.round((END-START)/864e5)+1;
+  $("day").textContent="Day "+n+" of "+tot;
+  $("prog").style.width=(n/tot*100)+"%";
+  $("prev").disabled=cur<=START;$("next").disabled=cur>=END;
+  $("prev").style.opacity=cur<=START?.4:1;$("next").style.opacity=cur>=END?.4:1;
+  var h="";
+  CHECKS.forEach(function(c){
+    var s=streak(c[0]);
+    h+='<button class="chk'+(r[c[0]]?" on":"")+'" data-c="'+c[0]+'"><span class="box">✓</span><span>'+c[1]+(c[2]?"<small>"+c[2]+"</small>":"")+'</span>'+(s>1?'<span class="s">🔥 '+s+'</span>':"")+'</button>';
+  });
+  $("checks").innerHTML=h;
+  document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
+  calc();cal();
+}
+function calc(){
+  var r=data[key(cur)]||{},p=+r.p||0,c=+r.c||0,f=+r.f||0;
+  $("calc").textContent=(p||c||f)?"Macros add up to ≈ "+Math.round(p*4+c*4+f*9)+" kcal":"";
+  var t=(+r.hwork||0)+(+r.hlearn||0);
+  $("hsum").textContent=t?"Total today: "+(Math.round(t*100)/100)+" hrs":"";
+}
+function score(k){var r=data[k]||{},s=0;CHECKS.forEach(function(c){if(r[c[0]])s++});return s}
+function cal(){
+  var h="",d=START,ck=key(cur);
+  while(d<=END){
+    var k=key(d),s=score(k),l=s?Math.min(4,Math.ceil(s/1.5)):0;
+    h+='<button data-d="'+k+'" class="'+(l?"l"+l:"")+(k===ck?" cur":"")+(d>now?" fut":"")+'" aria-label="'+k+'"></button>';
+    d=addDays(d,1);
+  }
+  $("cal").innerHTML=h;
+}
+$("checks").addEventListener("click",function(e){
+  var b=e.target.closest("[data-c]");if(!b)return;
+  var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();
+});
+document.addEventListener("input",function(e){
+  var k=e.target.dataset&&e.target.dataset.k;if(!k)return;
+  rec(key(cur))[k]=e.target.value;save();calc();
+});
+$("cal").addEventListener("click",function(e){
+  var b=e.target.closest("[data-d]");if(!b)return;
+  var p=b.dataset.d.split("-");cur=new Date(+p[0],+p[1]-1,+p[2]);render();window.scrollTo(0,0);
+});
+$("prev").onclick=function(){cur=clamp(addDays(cur,-1));render()};
+$("next").onclick=function(){cur=clamp(addDays(cur,1));render()};
+$("today").onclick=function(){cur=clamp(now);render();window.scrollTo(0,0)};
+$("bk").onclick=function(){$("bkbox").hidden=!$("bkbox").hidden};
+$("exp").onclick=function(){
+  var t=JSON.stringify(data);$("bkt").value=t;$("bkt").select();
+  try{navigator.clipboard.writeText(t)}catch(e){}
+};
+$("imp").onclick=function(){
+  try{var o=JSON.parse($("bkt").value);if(o&&typeof o==="object"){data=o;save();render();$("bkt").value="";alert("Restored.")}}
+  catch(e){alert("That backup text isn't valid.")}
+};
+
+var TOT=Math.round((END-START)/864e5)+1;
+var QL=`We suffer more often in imagination than in reality.|Seneca
+What stands in the way becomes the way.|Marcus Aurelius
+Waste no more time arguing about what a good man should be. Be one.|Marcus Aurelius
+The unexamined life is not worth living.|Socrates
+Well begun is half done.|Aristotle
+No man ever steps in the same river twice.|Heraclitus
+It's not what happens to you, but how you react to it that matters.|Epictetus
+He who has a why to live can bear almost any how.|Friedrich Nietzsche
+I think, therefore I am.|René Descartes
+It does not matter how slowly you go as long as you do not stop.|Confucius
+The man who moves a mountain begins by carrying away small stones.|Confucius
+A journey of a thousand miles begins with a single step.|Lao Tzu
+What we think, we become.|Buddha
+Knowing is not enough; we must apply. Willing is not enough; we must do.|Johann Wolfgang von Goethe
+Imagination is more important than knowledge.|Albert Einstein
+Try not to become a man of success, but rather a man of value.|Albert Einstein
+If I have seen further, it is by standing on the shoulders of giants.|Isaac Newton
+We are made of star-stuff.|Carl Sagan
+Genius is one percent inspiration and ninety-nine percent perspiration.|Thomas Edison
+Whether you think you can, or you think you can't, you're right.|Henry Ford
+Stay hungry, stay foolish.|Steve Jobs
+The only way to do great work is to love what you do.|Steve Jobs
+Your time is limited, so don't waste it living someone else's life.|Steve Jobs
+The most important investment you can make is in yourself.|Warren Buffett
+Someone is sitting in the shade today because someone planted a tree long ago.|Warren Buffett
+An investment in knowledge pays the best interest.|Benjamin Franklin
+Lost time is never found again.|Benjamin Franklin
+Float like a butterfly, sting like a bee.|Muhammad Ali
+I hated every minute of training, but I said: don't quit. Suffer now and live the rest of your life as a champion.|Muhammad Ali
+I've failed over and over and over again in my life. And that is why I succeed.|Michael Jordan
+The harder I work, the luckier I get.|Gary Player
+Courage is not the absence of fear, but the triumph over it.|Nelson Mandela
+The only thing we have to fear is fear itself.|Franklin D. Roosevelt
+Do what you can, with what you have, where you are.|Theodore Roosevelt
+Nothing great was ever achieved without enthusiasm.|Ralph Waldo Emerson
+Go confidently in the direction of your dreams.|Henry David Thoreau
+If you want to be a writer, you must read a lot and write a lot.|Stephen King
+A reader lives a thousand lives before he dies.|George R.R. Martin
+Reading is to the mind what exercise is to the body.|Joseph Addison
+The secret of getting ahead is getting started.|Mark Twain
+Discipline is the bridge between goals and accomplishment.|Jim Rohn
+The only impossible journey is the one you never begin.|Tony Robbins
+Whatever the mind can conceive and believe, it can achieve.|Napoleon Hill
+Courage is what it takes to stand up and speak, and also to sit down and listen.|Winston Churchill
+I am the master of my fate, I am the captain of my soul.|William Ernest Henley
+Not all those who wander are lost.|J.R.R. Tolkien
+The good life is one inspired by love and guided by knowledge.|Bertrand Russell
+Strength does not come from physical capacity. It comes from an indomitable will.|Mahatma Gandhi
+A man who dares to waste one hour of time has not discovered the value of life.|Charles Darwin
+Luck is what happens when preparation meets opportunity.|Seneca
+Eat to live, not live to eat.|Socrates`.split("\n").map(function(x){return x.split("|")});
+var sd=7;function rn(){sd=sd*16807%2147483647;return sd/2147483647}
+for(var qi=QL.length-1;qi>0;qi--){var qj=Math.floor(rn()*(qi+1)),tq=QL[qi];QL[qi]=QL[qj];QL[qj]=tq}
+function cowRender(){
+  var n=Math.min(TOT,Math.max(1,Math.round((now-START)/864e5)+1)),sum=0,wk=0,wc=0;
+  for(var i=0;i<n;i++){var sc=score(key(addDays(START,i)))/CHECKS.length;sum+=sc;if(i>=n-7){wk+=sc;wc++}}
+  var ov=sum/n,w=wk/wc,h=Math.min(1,.15+.85*(.6*w+.4*ov));
+  var g=(n-1)/(TOT-1),sz=.42+.58*g,hk=1+.35*(1-g);
+  $("cow").setAttribute("transform","translate(185 262) scale("+sz+")");
+  $("cow").style.filter="saturate("+(.35+.65*h)+") brightness("+(.88+.12*h)+")";
+  $("head").setAttribute("transform","translate(70 -80) scale("+hk+") translate(-70 80)");
+  $("horns").setAttribute("opacity",Math.min(1,Math.max(0,(g-.25)*3)));
+  $("mouth").setAttribute("d","M62,-71 Q70,"+(-71+(h-.45)*30)+" 78,-71");
+  $("eyes").setAttribute("display",h>.75?"none":"inline");$("hEyes").setAttribute("display",h>.75?"inline":"none");
+  $("bl1").setAttribute("opacity",h*.8);$("bl2").setAttribute("opacity",h*.8);
+  $("hearts").setAttribute("display",h>.7?"inline":"none");
+  $("stage").textContent=g<.08?"Newborn calf":g<.3?"Little calf":g<.6?"Young heifer":g<.9?"Strong cow":"Fully grown, happy cow";
+  $("mood").textContent=h<.3?"Hungry and sleepy. Tick your habits to cheer me up!":h<.55?"Doing okay. Keep going!":h<.8?"Happy and healthy!":"Radiantly happy! 🌸";
+  $("hbar").style.width=Math.round(h*100)+"%";
+  $("s1").textContent="Health "+Math.round(h*100)+"%";$("s2").textContent="Age: day "+n;$("s3").textContent="Week "+Math.round(w*100)+"%";
+  var q="";for(var j=0;j<5;j++){var it=QL[((n-1)*5+j)%QL.length];q+='<div class="q"><p>“'+it[0]+'”</p><small>— '+it[1]+'</small></div>'}
+  $("qs").innerHTML=q;
+  sleepRender();
+}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+var last="",bt=0;
+var JOKES=["What do you call a cow with no legs? Ground beef. …sorry, I'm a little sensitive about that 🥲","Why did the cow cross the road? To get to the udder side!","What's a cow's favorite subject? Moo-sic. And moo-th. And history, because it's the past-ure.","How do cows stay up to date? They read the moo-spaper.","What do you call a sleeping bull? A bulldozer 😴","Why do cows wear bells? Because their horns don't work. Honk honk!","What did the cow say to the sad cow? Don't have a cow, man. Have a snack.","I told my friends I'm on a cut. They said I look moo-ch better. I didn't hear it as a joke. I'm still proud 🥹","I would tell you a long joke, but it's udderly boring. Just kidding, I'm hilarious.","What's a cow's favorite exercise? Cow-bell curls 💪","What do cows do on date night? Go to the moo-vies.","My therapist says I should stop being so grass-ious. I said I couldn't help it."];
+var NICE=["You showed up today. That's already a win. 🌸","Tiny steps still count. I'm growing because of you!","Being bored is just your brain growing new muscles. 💪","You're building a whole new man, one boring day at a time. I believe in you.","Proud of you. For real. Not even joking this time.","Deep breath in… and out. Look at me. We're okay.","I get to graze all day. You get to build an empire. Great deal, honestly.","Every habit you tick makes my coat shinier ✨","The stronger you get, the happier I get. We're a team.","You're way tougher than any urge. Urges pass. You stay.","Drink some water with me? Hydrated humans are happy humans 💧","Quiet days build loud futures. Keep going.","You don't need cheap thrills. You have me. And a Fuji view.","You've got big dreams and a big heart. I like both."];
+var HELP=["Urges are like waves: they peak, then fade in about 15-20 minutes. Let's ride this one together. 🌊","Stand up right now. Walk to another room. I'll wait here and chew grass.","Do 15 push-ups. Slow ones. Then tell me how loud the urge is.","Splash water on your face and drink a full glass. Then come back and tap me.","Put your phone down and go outside for 10 minutes. Sky, trees, air. I'll be right here.","This feeling is not an order. You can just watch it pass. I'm watching with you.","Text or call someone, even about nothing. Or write 3 lines in today's note about what led to this.","You've come a long way already. One more urge survived makes the next one weaker. 💛","Take a warm shower or move to a different room. A change of space helps break the loop.","I'm not going anywhere. Breathe in for 4, hold 4, out for 6. Do it three times with me."];
+function greet(){
+  var h=new Date().getHours(),t=h<5?"Still up, Kushagra? It's late. Let's wind down soon 🌙":h<12?"Good morning, Kushagra! ☀️ How are you feeling today?":h<17?"Good afternoon, Kushagra! 🌼 How's the day treating you?":h<21?"Good evening, Kushagra! 🌅 How are you doing?":"Good night, Kushagra 🌙 Time to put the phone away soon!";
+  return t;
+}
+function habitLine(){
+  var r=data[key(now)]||{};
+  if(!r.work&&new Date().getHours()>=16)return "Haven't seen a workout tick yet. Even a short one makes me moo with joy 🏋️";
+  if(!r.read)return "Read a few pages today? Books make us both smarter 📖";
+  if(r.reels&&r.clean)return "Off the scroll and clean today! I'm doing happy hops 🐮✨";
+  return null;
+}
+var tyT=[];
+function esc(x){return x.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function say(txt){
+  var b=$("bub");clearTimeout(bt);tyT.forEach(clearTimeout);tyT=[];
+  b.innerHTML='<span style="visibility:hidden">'+esc(txt)+'</span>';b.classList.add("on");
+  var h=$("hop");h.classList.remove("hop");void h.getBoundingClientRect();h.classList.add("hop");
+  var cute=vox===1,lead=cute?550:0,step=cute?65:26,t=lead,times=[],k;
+  for(k=0;k<txt.length;k++){times.push(t);t+=/[a-z]/i.test(txt[k])?step:step*.5}
+  if(cute){moo();blips(txt,times)}else if(vox===2)speak(txt);
+  for(k=0;k<txt.length;k++)(function(n){tyT.push(setTimeout(function(){b.innerHTML=esc(txt.slice(0,n+1))+'<span style="visibility:hidden">'+esc(txt.slice(n+1))+'</span>'},times[n]+50))})(k);
+  bt=setTimeout(function(){b.classList.remove("on")},t+Math.max(2200,txt.length*25));
+  return t;
+}
+var vox=0,AC=null;
+function ac(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}return AC}
+function moo(){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),f=c.createBiquadFilter(),g=c.createGain();
+  o.type="sawtooth";o.frequency.setValueAtTime(240,t);o.frequency.linearRampToValueAtTime(150,t+.25);o.frequency.linearRampToValueAtTime(190,t+.6);
+  f.type="lowpass";f.frequency.value=700;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.08);g.gain.linearRampToValueAtTime(0,t+.65);
+  o.connect(f);f.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.7)}
+function blips(txt,times){var c=ac();if(!c)return;var t0=c.currentTime+.05;
+  for(var i=0;i<txt.length;i++){if(!/[a-z]/i.test(txt[i]))continue;var ch=txt.charCodeAt(i),
+    o=c.createOscillator(),g=c.createGain();o.type="triangle";o.frequency.value=380+(ch%12)*38;
+    var st=t0+times[i]/1000;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(.07,st+.01);g.gain.linearRampToValueAtTime(0,st+.055);
+    o.connect(g);g.connect(c.destination);o.start(st);o.stop(st+.06)}}
+function speak(txt){
+    try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(txt.replace(/[^\w\s.,!?'’:-]/g,""));
+    var vs=speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang)}),
+    v=vs.filter(function(v){return /samantha|karen|moira|google uk english female|zira|aria|jenny|female/i.test(v.name)})[0]||vs[0];
+    if(v)u.voice=v;u.pitch=1.15;u.rate=1.05;speechSynthesis.speak(u)}catch(e){}
+}
+var GRUMPY=["Mooo… no. It's my bedtime. Go to sleep, Kushagra! You should sleep too 😴","Shhh… I'm sleeping. Phone away, eyes closed. Sleep makes you stronger and better looking.","Zzz… it's night! Even cows need beauty sleep. Put the phone down. 🌙","I'm not awake. This is a sleep-talking cow. Go. To. Sleep.","No more talking tonight. Tomorrow we grow together. Goodnight! 🐮💤","Phone out of bed, lights off. Sleepy cow orders. Goodnight, Kushagra."];
+var WAKE=["Mooo~ good morning, Kushagra! ☀️ Ready to make today count?","*stretches* Good morning! Let's tick off a great day together 🌼","You woke me up! Fresh grass, fresh day. Let's go! 🐮"];
+function tk(){return key(dayStart(new Date()))}
+function cowState(){var d=new Date(),h=d.getHours()+d.getMinutes()/60,n=h>=23.5||h<5;return{night:n,asleep:n||data._wake!==tk()}}
+var acting=false;
+function drowsy(ms){
+  var e=$("eyes");acting=true;
+  $("sEyes").setAttribute("display","none");$("zz").setAttribute("display","none");
+  e.classList.remove("bl");e.style.transformOrigin="50% 50%";e.style.transition="none";e.style.transform="scaleY(1)";e.setAttribute("display","inline");
+  void e.getBoundingClientRect();e.style.transition="transform 1.1s ease-in";
+  setTimeout(function(){e.style.transform="scaleY(.55)"},ms*.55);
+  setTimeout(function(){e.style.transform="scaleY(.15)"},ms+250);
+  setTimeout(function(){e.setAttribute("display","none");e.style.transition="";e.style.transform="";e.classList.add("bl");acting=false;sleepRender()},ms+1500);
+}
+function sleepRender(){if(acting)return;
+  var st=cowState(),A=function(i,v){$(i).setAttribute("display",v?"inline":"none")};
+  $("nite").setAttribute("opacity",st.night?.6:0);A("stars",st.night);A("sun",!st.night&&(WX==="sun"||WX==="part"));A("zz",st.asleep);
+  if(st.night)$("cow").style.filter="brightness(.75)";
+  A("sEyes",st.asleep);
+  if(st.asleep){A("eyes",0);A("hEyes",0);A("hearts",0);$("mouth").setAttribute("d","M65,-71 Q70,-69 75,-71");$("mood").textContent=st.night?"Zzz… sleeping. Go to bed too! 🌙":"Zzz… tap me to wake me up."}
+}
+setInterval(function(){if(!$("pgC").hidden)cowRender()},30000);
+function talk(){
+  var st=cowState();
+  if(st.night){drowsy(say(pick(GRUMPY)));return}
+  if(st.asleep){data._wake=tk();save();cowRender();say(pick(WAKE));return}
+  var t,i=0;
+  do{var r=Math.random();t=r<.2?greet():r<.4?(habitLine()||pick(NICE)):r<.7?pick(JOKES):pick(NICE);i++}while(t===last&&i<6);
+  last=t;say(t);
+}
+$("cow").onclick=talk;$("talk").onclick=talk;
+$("help").onclick=function(){var t=pick(HELP);if(cowState().night)t="*sleepy moo* I'm here. "+t+" Then straight to bed. 🌙";var d=say(t);last=t;if(cowState().night)drowsy(d)};
+$("vox").onclick=function(){vox=(vox+1)%3;this.textContent=["🔇","🐮","🔊"][vox];if(vox)say(vox===1?"Moo! Cute cow sounds are on 🐮":"Hello! I have a real voice now 🌼")};
+function tab(c){$("pgT").hidden=c;$("pgC").hidden=!c;$("tabT").className=c?"":"on";$("tabC").className=c?"on":"";if(c){cowRender();setTimeout(function(){var st=cowState();say(st.night?pick(GRUMPY):st.asleep?"Zzz… tap me to wake me up 🐮💤":greet())},400)}window.scrollTo(0,0)}
+$("tabT").onclick=function(){tab(false)};$("tabC").onclick=function(){tab(true)};
+var WX="part",wtxt="manual · tap to change",MODES=["sun","part","cloud","rain","storm","snow","fog"],
+LBL={sun:"Sunny",part:"Partly cloudy",cloud:"Cloudy",rain:"Rain",storm:"Thunderstorm",snow:"Snow",fog:"Fog"},
+EM={sun:"☀️",part:"🌤",cloud:"☁️",rain:"🌧",storm:"⛈",snow:"❄️",fog:"🌫"},
+WXMSG={sun:"Sunshine! Perfect grazing weather ☀️",part:"A few clouds, a few sunbeams. Lovely alpine day 🌤",cloud:"A bit cloudy, but still cozy ☁️",rain:"Rain! Splish splash, the grass loves it 🌧",storm:"Thunder! Stay close. I'm brave, but also a little scared ⛈",snow:"Snow! ❄️ Cold hooves, warm heart.",fog:"Misty alpine morning… so mysterious 🌫"};
+function wxApply(){
+  var r=WX==="rain"||WX==="storm",sn=WX==="snow",h="",i,x,d,dl;
+  if(r||sn){for(i=0;i<(r?70:50);i++){x=(Math.random()*380-10).toFixed(0);d=(r?.5+Math.random()*.4:3+Math.random()*3).toFixed(2);dl=(-Math.random()*5).toFixed(2);
+    h+=r?'<rect x="'+x+'" y="-14" width="1.4" height="12" fill="#9ec5ee" opacity=".8" style="animation:rn '+d+'s linear '+dl+'s infinite"/>':'<circle cx="'+x+'" cy="-8" r="'+(1.3+Math.random()*1.8).toFixed(1)+'" fill="#fff" style="animation:sn '+d+'s linear '+dl+'s infinite"/>'}}
+  $("wp").innerHTML=h;
+  $("wdim").setAttribute("opacity",{sun:0,part:.05,cloud:.22,rain:.35,storm:.5,snow:.2,fog:.1}[WX]);
+  $("wgr").setAttribute("opacity",sn?.8:0);$("wfog").setAttribute("opacity",WX==="fog"?.55:0);
+  $("wcl").setAttribute("display",WX==="sun"?"none":"inline");
+  var f=$("wfl");f.setAttribute("display",WX==="storm"?"inline":"none");f.style.animation=WX==="storm"?"fz 6s infinite":"none";
+  $("wxb").textContent="🇨🇭 "+EM[WX]+" "+LBL[WX]+(wtxt?" · "+wtxt:"");
+  sleepRender();
+}
+function wxLive(){try{fetch("https://api.open-meteo.com/v1/forecast?latitude=46.69&longitude=7.86&current=weather_code,temperature_2m").then(function(r){return r.json()}).then(function(j){
+  var c=j.current.weather_code;WX=c===0?"sun":c<3?"part":c===3?"cloud":(c===45||c===48)?"fog":c>=95?"storm":((c>=71&&c<=77)||c===85||c===86)?"snow":"rain";
+  wtxt=Math.round(j.current.temperature_2m)+"°C · live";wxApply()}).catch(function(){})}catch(e){}}
+$("wxb").onclick=function(){WX=MODES[(MODES.indexOf(WX)+1)%MODES.length];wtxt="manual";wxApply();if(!cowState().night)say(WXMSG[WX])};
+wxApply();wxLive();
+render();
+})();
+try{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js")}catch(e){}
+</script>
+</body>
+</html>
