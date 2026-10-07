@@ -91,6 +91,9 @@ svg.sc *{transform-box:fill-box}
   <div class="card">
     <h3>Morning</h3>
     <label>Body weight (kg)<input type="number" inputmode="decimal" step="0.1" data-k="wt"></label>
+    <div class="row" id="wrng"><button data-r="30">30 days</button><button data-r="90">90 days</button><button data-r="0">All</button></div>
+    <svg id="wch" viewBox="0 0 340 150" style="width:100%;height:auto;margin-top:8px"></svg>
+    <div class="hint" id="wsum"></div>
   </div>
 
   <div class="card">
@@ -236,7 +239,7 @@ function render(){
   });
   $("checks").innerHTML=h;
   document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
-  calc();cal();
+  calc();cal();wchart();
 }
 function calc(){
   var r=data[key(cur)]||{},p=+r.p||0,c=+r.c||0,f=+r.f||0;
@@ -254,13 +257,33 @@ function cal(){
   }
   $("cal").innerHTML=h;
 }
+var wr=30;
+function wchart(){
+  var el=$("wch"),tot=Math.round((cur-START)/864e5)+1,lim=wr?Math.min(wr,tot):tot,pts=[],i,j,d,v;
+  document.querySelectorAll("#wrng button").forEach(function(b){var on=+b.dataset.r===wr;b.style.background=on?"var(--accbg)":"";b.style.borderColor=on?"var(--acc)":""});
+  for(i=0;i<lim;i++){d=addDays(cur,-(lim-1-i));v=parseFloat((data[key(d)]||{}).wt);if(v>0)pts.push({i:i,v:v})}
+  if(pts.length<2){el.innerHTML='<text x="170" y="78" text-anchor="middle" fill="var(--mute)" font-size="12">Log your weight on 2+ days to see the trend</text>';$("wsum").textContent=pts.length?"Latest: "+pts[0].v+" kg":"";return}
+  var vs=pts.map(function(p){return p.v}),mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs),pad=(mx-mn)||1,lo=mn-pad*.3,hi=mx+pad*.3;
+  var X=function(i){return 40+(lim>1?i/(lim-1):0)*290},Y=function(v){return 125-(v-lo)/(hi-lo)*105};
+  var line=pts.map(function(p,n){return(n?"L":"M")+X(p.i).toFixed(1)+" "+Y(p.v).toFixed(1)}).join(" ");
+  var ma=pts.map(function(p,n){var a=0,c=0;for(j=0;j<pts.length;j++)if(pts[j].i<=p.i&&p.i-pts[j].i<7){a+=pts[j].v;c++}return(n?"L":"M")+X(p.i).toFixed(1)+" "+Y(a/c).toFixed(1)}).join(" ");
+  var fd=function(k){return addDays(cur,-(lim-1-k)).toLocaleDateString(undefined,{day:"numeric",month:"short"})};
+  el.innerHTML='<g stroke="var(--line)"><line x1="40" x2="330" y1="20" y2="20"/><line x1="40" x2="330" y1="125" y2="125"/></g>'
+   +'<g fill="var(--mute)" font-size="10"><text x="36" y="23" text-anchor="end">'+hi.toFixed(1)+'</text><text x="36" y="128" text-anchor="end">'+lo.toFixed(1)+'</text><text x="40" y="145">'+fd(0)+'</text><text x="330" y="145" text-anchor="end">'+fd(lim-1)+'</text></g>'
+   +'<path d="'+ma+'" fill="none" stroke="var(--mute)" stroke-width="1.5" stroke-dasharray="4 3"/>'
+   +'<path d="'+line+'" fill="none" stroke="var(--acc)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+   +pts.map(function(p){return'<circle cx="'+X(p.i).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="3" fill="var(--acc)"/>'}).join("");
+  var ch=pts[pts.length-1].v-pts[0].v;
+  $("wsum").textContent="Latest "+pts[pts.length-1].v+" kg · "+(ch>0?"+":"")+ch.toFixed(1)+" kg over this range · dashed = 7-day average";
+}
+$("wrng").addEventListener("click",function(e){var b=e.target.closest("[data-r]");if(!b)return;wr=+b.dataset.r;wchart()});
 $("checks").addEventListener("click",function(e){
   var b=e.target.closest("[data-c]");if(!b)return;
   var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();
 });
 document.addEventListener("input",function(e){
   var k=e.target.dataset&&e.target.dataset.k;if(!k)return;
-  rec(key(cur))[k]=e.target.value;save();calc();
+  rec(key(cur))[k]=e.target.value;save();calc();wchart();
 });
 $("cal").addEventListener("click",function(e){
   var b=e.target.closest("[data-d]");if(!b)return;
