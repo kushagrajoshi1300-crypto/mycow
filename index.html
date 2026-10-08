@@ -70,11 +70,27 @@ svg.sc *{transform-box:fill-box}
 @keyframes rn{to{transform:translate(-14px,320px)}}@keyframes sn{0%{transform:translate(0,0)}50%{transform:translate(14px,160px)}100%{transform:translate(-6px,320px)}}
 @keyframes fz{0%,86%,100%{opacity:0}88%,92%{opacity:.85}90%{opacity:.1}}
 #wxb{position:absolute;left:8px;bottom:16px;border:0;border-radius:12px;padding:5px 10px;font-size:12px;background:rgba(255,255,255,.88);color:#2a2a28}
+#pop{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:50;opacity:0}
+#pop.on{animation:pp 2.8s ease forwards}
+@keyframes pp{0%{opacity:0}8%,80%{opacity:1}100%{opacity:0}}
+@keyframes pi{from{transform:scale(.4)}to{transform:scale(1)}}
+#pop .pc{background:var(--card);color:var(--ink);border:2px solid var(--acc);border-radius:22px;padding:22px 30px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35);animation:pi .5s cubic-bezier(.2,1.6,.4,1);max-width:80vw}
+#pop b{display:block;font-size:34px}
+.cf{position:fixed;top:-16px;width:9px;height:14px;border-radius:2px;z-index:49;pointer-events:none;animation:cfa 2.4s ease-in forwards}
+@keyframes cfa{to{transform:translateY(110vh) rotate(720deg)}}
+.big{font-size:56px;line-height:1;font-weight:700}
+.sosb{width:100%;padding:14px;border-radius:14px;border:2px solid var(--acc);background:var(--accbg);color:var(--ink);font:inherit;font-weight:700;font-size:17px;margin-bottom:12px}
+#sos{position:fixed;inset:0;background:var(--bg);color:var(--ink);overflow:auto;z-index:60;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(30px + env(safe-area-inset-bottom,0px))}
+#sos[hidden]{display:none}.sosin{max-width:520px;margin:0 auto}
+#brw{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;height:200px}
+#brc{width:70px;height:70px;border-radius:50%;background:var(--accbg);border:3px solid var(--acc);animation:brz 14s ease-in-out infinite}
+@keyframes brz{0%{transform:scale(.8)}28.5%{transform:scale(1.8)}57%{transform:scale(1.8)}100%{transform:scale(.8)}}
+.rv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}.rv:last-child{border:0}.rv span:first-child{color:var(--mute)}.rv span:last-child{text-align:right;font-weight:600}
 </style>
 </head>
 <body>
 <main>
-<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">My Cow 🐄</button></div>
+<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">My Cow 🐄</button><button id="tabS">Streaks 🔥</button></div>
 <div id="pgT">
   <div class="nav">
     <button id="prev" aria-label="Previous day">‹</button>
@@ -82,6 +98,8 @@ svg.sc *{transform-box:fill-box}
     <button id="next" aria-label="Next day">›</button>
   </div>
   <div class="bar"><i id="prog"></i></div>
+  <div id="whyb" class="card" hidden style="cursor:pointer"><h3>My why</h3><div id="whyt"></div></div>
+  <button id="sosb" class="sosb">🆘 SOS</button>
 
   <div class="card">
     <h3>Daily ritual</h3>
@@ -114,6 +132,8 @@ svg.sc *{transform-box:fill-box}
       <div><label>Fats (g)<input type="number" inputmode="decimal" data-k="f"></label></div>
     </div>
     <div class="hint" id="calc"></div>
+    <div class="grid" style="margin-top:8px"><div><label>Daily goal: kcal<input type="number" inputmode="numeric" data-g="cal"></label></div><div><label>Daily goal: protein (g)<input type="number" inputmode="numeric" data-g="p"></label></div></div>
+    <div id="gbars"></div>
   </div>
 
   <div class="card">
@@ -192,19 +212,43 @@ svg.sc *{transform-box:fill-box}
 <div class="hint">Your cow grows a little every day for a year. Its health follows your ticks: mostly the last 7 days, plus your overall record.</div></div>
 <div class="card"><h3>Today's 5 quotes</h3><div id="qs"></div></div>
 </div>
+<div id="pgS" hidden>
+<div class="card"><h3>My why</h3><textarea id="whyi" placeholder="Why am I quitting? Who am I becoming? Write it in your own words."></textarea><div class="hint">Shown on your home page, in the urge screen, and the cow reminds you now and then.</div></div>
+<div class="card"><h3>Clean-day streak</h3>
+<div style="display:flex;align-items:baseline;gap:8px"><span class="big" id="cs">0</span><span>days 🔥</span></div>
+<div class="hint" id="cbest"></div>
+<div class="bar" style="margin:10px 0 4px"><i id="cnext"></i></div><div class="hint" id="cnl"></div>
+<svg id="cch" viewBox="0 0 340 130" style="width:100%;height:auto;margin-top:8px"></svg>
+<div class="hint">The line shows your streak length each day (last 60 days). If it ever drops to zero, note the trigger and start climbing again.</div></div>
+<div class="card"><h3>Weekly review · last 7 days</h3><div id="wrev"></div><label style="margin-top:10px">One thing I'll do better next week<textarea id="focus"></textarea></label></div>
+<div class="card"><h3>All habits</h3><div id="slist"></div></div>
+</div>
 </main>
+<div id="sos" hidden><div class="sosin">
+<h2 style="margin:0 0 4px">You've got this 🫶</h2>
+<div class="hint">Urges peak and fade, usually within 15-20 minutes. You don't have to fight it. Just wait it out here.</div>
+<div class="big" id="stime" style="text-align:center;margin:12px 0">20:00</div>
+<div class="bar"><i id="sbar"></i></div>
+<div id="brw"><div id="brc"></div><div id="brt">Breathe in…</div></div>
+<div class="card" id="swhy"></div>
+<div class="card"><h3>Do these now</h3><div id="ssteps"></div></div>
+<label>What triggered this? (saved to today's note)<textarea id="strig"></textarea></label>
+<div class="row"><button id="sdone" class="mini" style="background:var(--acc);color:var(--card);font-weight:700;border-color:var(--acc)">I made it 💪</button><button id="sclose" class="mini">Close</button></div>
+<div class="hint" style="margin-top:10px">If you slip, it isn't the end. Log it, note the trigger and carry on. If urges feel too big to handle alone, a therapist can help, and so can NIMHANS's behavioural addictions clinic in Bangalore.</div>
+</div></div>
+<div id="pop"></div>
 <script>
 (function(){
-var KEY="ritual-v1",START=new Date(2026,9,7),END=new Date(2027,9,7);
+var KEY="ritual-v1",START=new Date(2026,9,9),END=new Date(2027,9,9);
 var CHECKS=[
- ["reels","Stayed off Reels / Shorts","No Instagram Reels, no YouTube Shorts"],
- ["clean","Stayed clear of the private habit","Tick = a clean day"],
+ ["clean","Stayed strong 💪",""],
  ["work","Worked out (lifting)",""],
  ["cardio","Did cardio",""],
  ["junk","No junk food",""],
  ["read","Read today",""],
  ["wrote","Wrote today",""],
- ["phone","Phone out of bed by 11:30 PM–12 AM","Charge it away from the bed"]
+ ["phone","Phone out of bed by 11:30 PM–12 AM","Charge it away from the bed"],
+ ["med","Meditation / breathing 🧘",""]
 ];
 var data={};
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
@@ -239,13 +283,18 @@ function render(){
   });
   $("checks").innerHTML=h;
   document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
-  calc();cal();wchart();
+  document.querySelectorAll("[data-g]").forEach(function(el){el.value=(data._goals||{})[el.dataset.g]||""});
+  calc();cal();wchart();renderWhy();
 }
 function calc(){
   var r=data[key(cur)]||{},p=+r.p||0,c=+r.c||0,f=+r.f||0;
   $("calc").textContent=(p||c||f)?"Macros add up to ≈ "+Math.round(p*4+c*4+f*9)+" kcal":"";
   var t=(+r.hwork||0)+(+r.hlearn||0);
   $("hsum").textContent=t?"Total today: "+(Math.round(t*100)/100)+" hrs":"";
+  var g=data._goals||{},gb="";
+  [["cal","Calories",+r.cal||0,"kcal",1],["p","Protein",+r.p||0,"g",0]].forEach(function(x){var goal=+g[x[0]];if(!goal)return;var pct=Math.min(100,x[2]/goal*100),over=x[4]&&x[2]>goal;
+    gb+='<div class="hint" style="margin-top:8px">'+x[1]+': '+x[2]+' / '+goal+' '+x[3]+' · '+(x[2]>=goal?(over?(x[2]-goal)+' over':'goal reached 🎯'):(goal-x[2])+' left')+'</div><div class="bar" style="margin:3px 0 0"><i style="width:'+pct+'%;background:'+(over?"var(--bad)":"var(--acc)")+'"></i></div>'});
+  $("gbars").innerHTML=gb;
 }
 function score(k){var r=data[k]||{},s=0;CHECKS.forEach(function(c){if(r[c[0]])s++});return s}
 function cal(){
@@ -279,7 +328,7 @@ function wchart(){
 $("wrng").addEventListener("click",function(e){var b=e.target.closest("[data-r]");if(!b)return;wr=+b.dataset.r;wchart()});
 $("checks").addEventListener("click",function(e){
   var b=e.target.closest("[data-c]");if(!b)return;
-  var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();
+  var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();if(r[b.dataset.c])celebrate(b.dataset.c,streak(b.dataset.c));
 });
 document.addEventListener("input",function(e){
   var k=e.target.dataset&&e.target.dataset.k;if(!k)return;
@@ -390,7 +439,7 @@ function habitLine(){
   var r=data[key(now)]||{};
   if(!r.work&&new Date().getHours()>=16)return "Haven't seen a workout tick yet. Even a short one makes me moo with joy 🏋️";
   if(!r.read)return "Read a few pages today? Books make us both smarter 📖";
-  if(r.reels&&r.clean)return "Off the scroll and clean today! I'm doing happy hops 🐮✨";
+  if(r.clean)return "A clean day so far! I'm doing happy hops 🐮✨";
   return null;
 }
 var tyT=[];
@@ -449,15 +498,108 @@ function talk(){
   var st=cowState();
   if(st.night){drowsy(say(pick(GRUMPY)));return}
   if(st.asleep){data._wake=tk();save();cowRender();say(pick(WAKE));return}
+  if(data._why&&Math.random()<.12){last="";say("Remember why you started: “"+data._why+"”");return}
   var t,i=0;
   do{var r=Math.random();t=r<.2?greet():r<.4?(habitLine()||pick(NICE)):r<.7?pick(JOKES):pick(NICE);i++}while(t===last&&i<6);
   last=t;say(t);
 }
 $("cow").onclick=talk;$("talk").onclick=talk;
-$("help").onclick=function(){var t=pick(HELP);if(cowState().night)t="*sleepy moo* I'm here. "+t+" Then straight to bed. 🌙";var d=say(t);last=t;if(cowState().night)drowsy(d)};
+$("help").onclick=function(){say("I'm right here. Let's ride this out together. 🫶");openSos()};
 $("vox").onclick=function(){vox=(vox+1)%3;this.textContent=["🔇","🐮","🔊"][vox];if(vox)say(vox===1?"Moo! Cute cow sounds are on 🐮":"Hello! I have a real voice now 🌼")};
-function tab(c){$("pgT").hidden=c;$("pgC").hidden=!c;$("tabT").className=c?"":"on";$("tabC").className=c?"on":"";if(c){cowRender();setTimeout(function(){var st=cowState();say(st.night?pick(GRUMPY):st.asleep?"Zzz… tap me to wake me up 🐮💤":greet())},400)}window.scrollTo(0,0)}
-$("tabT").onclick=function(){tab(false)};$("tabC").onclick=function(){tab(true)};
+var MS=[3,5,7,10,14,21,30,45,60,90,100,150,200,365],
+CL={clean:"Clean-day",work:"Workout",cardio:"Cardio",junk:"Clean-eating",read:"Reading",wrote:"Writing",phone:"Early-phone",med:"Meditation"},
+CM={clean:["Your brain is rewiring. Keep going!","Stronger every single day 💪","Urges lose their power when you ignore them.","This is who you are becoming."],other:["Consistency beats intensity.","Look at you go! 🌟","Habits are building the new you.","Small wins, big future."]};
+function runs(f){var n=Math.min(TOT,Math.max(1,Math.round((now-START)/864e5)+1)),a=[],p=0,i,t,d;
+  for(i=0;i<n;i++){d=addDays(START,i);t=(data[key(d)]||{})[f];p=t?p+1:(i===n-1&&d.getTime()===now.getTime()?p:0);a.push(p)}return a}
+function popup(em,title,sub,msg,big){
+  var el=$("pop"),i,d,cols=["#f78fb3","#ffd24d","#6fcf9b","#6fb5ff","#c9a0ff"];
+  el.innerHTML='<div class="pc"><div style="font-size:48px">'+em+'</div><b>'+title+'</b><div>'+sub+'</div><div class="hint" style="margin-top:6px">'+msg+'</div></div>';
+  el.classList.remove("on");void el.offsetWidth;el.classList.add("on");
+  for(i=0;i<(big?70:26);i++){d=document.createElement("div");d.className="cf";d.style.left=(Math.random()*100)+"vw";d.style.background=cols[i%5];d.style.animationDelay=(Math.random()*.6)+"s";d.style.animationDuration=(1.8+Math.random()*1.2)+"s";document.body.appendChild(d);(function(x){setTimeout(function(){x.remove()},3600)})(d)}
+}
+function celebrate(f,n){
+  if(n<2)return;var big=MS.indexOf(n)>-1;
+  popup(big?"🏆":"🔥","Streak "+n+"!",(CL[f]||"")+" streak"+(big?" · MILESTONE!":""),pick(CM[f==="clean"?"clean":"other"]),big);
+}
+function sosTotal(){var t=0;Object.keys(data).forEach(function(k){if(data[k]&&data[k].sos)t+=+data[k].sos});return t}
+function renderWhy(){
+  var w=data._why||"",f=data._focus||"";$("whyb").hidden=!(w||f);
+  $("whyt").innerHTML=(w?"“"+esc(w)+"”":"")+(f?'<div class="hint" style="margin-top:6px">This week\'s focus: '+esc(f)+'</div>':"");
+}
+function wreview(){
+  var n=Math.max(1,Math.min(7,Math.round((now-START)/864e5)+1)),i,r,kc=0,kn=0,pc=0,pn=0,sl=0,sn=0,hrs=0,sos=0,ticks=0,cnt={},wts=[];
+  CHECKS.forEach(function(c){cnt[c[0]]=0});
+  for(i=0;i<n;i++){r=data[key(addDays(now,-i))]||{};
+    CHECKS.forEach(function(c){if(r[c[0]]){cnt[c[0]]++;ticks++}});
+    if(+r.cal){kc+=+r.cal;kn++}if(+r.p){pc+=+r.p;pn++}if(+r.sleep){sl+=+r.sleep;sn++}
+    hrs+=(+r.hwork||0)+(+r.hlearn||0);sos+=(+r.sos||0);if(+r.wt)wts.push(+r.wt)}
+  var best=CHECKS[0],weak=CHECKS[0];CHECKS.forEach(function(c){if(cnt[c[0]]>cnt[best[0]])best=c;if(cnt[c[0]]<cnt[weak[0]])weak=c});
+  var g=data._goals||{},row=function(a,b){return'<div class="rv"><span>'+a+'</span><span>'+b+'</span></div>'};
+  var wc=wts.length>1?(wts[0]-wts[wts.length-1]):null;
+  $("wrev").innerHTML=
+    row("Overall ticks",Math.round(ticks/(n*CHECKS.length)*100)+"%")
+   +row("Clean days",cnt.clean+" / "+n)
+   +row("Workouts · cardio",cnt.work+" · "+cnt.cardio)
+   +row("Avg calories",kn?Math.round(kc/kn)+" kcal"+(+g.cal?" (goal "+g.cal+")":""):"–")
+   +row("Avg protein",pn?Math.round(pc/pn)+" g"+(+g.p?" (goal "+g.p+")":""):"–")
+   +row("Avg sleep",sn?(sl/sn).toFixed(1)+" h":"–")
+   +row("Hours invested",(Math.round(hrs*10)/10)+" h")
+   +row("Urges survived",sos)
+   +row("Weight change",wc==null?"–":(wc>0?"+":"")+wc.toFixed(1)+" kg")
+   +row("Strongest habit",best[1])
+   +row("Needs attention",weak[1]);
+}
+function openSos(){
+  $("sos").hidden=false;document.body.style.overflow="hidden";sosEnd=Date.now()+12e5;
+  $("ssteps").innerHTML=SSTEPS.map(function(t,i){return'<button class="chk" data-s="'+i+'"><span class="box">✓</span><span>'+t+'</span></button>'}).join("");
+  var w=data._why||"";$("swhy").innerHTML=w?'<h3>Remember your why</h3><div>“'+esc(w)+'”</div>':'<h3>Your why</h3><div class="hint">Add your why on the Streaks tab and it will show up right here.</div>';
+  $("strig").value="";clearInterval(sosT);sosT=setInterval(sosTick,500);sosTick();$("sos").scrollTop=0;
+}
+function sosTick(){
+  var left=Math.max(0,sosEnd-Date.now()),el=(12e5-left)/1000,ph=el%14;
+  $("stime").textContent=pad(Math.floor(left/6e4))+":"+pad(Math.floor(left%6e4/1000));$("sbar").style.width=(100-left/12000)+"%";
+  $("brt").textContent=ph<4?"Breathe in…":ph<8?"Hold…":"Breathe out…";
+  if(left===0){clearInterval(sosT);$("stime").textContent="You did it! 🎉";try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}}
+}
+function closeSos(){clearInterval(sosT);$("sos").hidden=true;document.body.style.overflow=""}
+var sosT=null,sosEnd=0,SSTEPS=["Stand up and leave this room","Drink a full glass of water","Do 15 slow push-ups","Go outside or to a different room for 5 minutes","Breathe along with the circle for a few minutes","Write what triggered this below"];
+$("sosb").onclick=openSos;$("sclose").onclick=closeSos;
+$("ssteps").addEventListener("click",function(e){var b=e.target.closest("[data-s]");if(b)b.classList.toggle("on")});
+$("sdone").onclick=function(){
+  var r=rec(tk()),t=$("strig").value.trim();r.sos=(+r.sos||0)+1;if(t)r.note=(r.note?r.note+"\n":"")+"Urge: "+t;
+  save();var n=sosTotal();closeSos();render();popup("💪","Urge survived #"+n,"You rode it out","Every urge you outlast makes the next one weaker.",true);
+};
+$("whyb").onclick=function(){tab(2)};
+$("whyi").addEventListener("input",function(){data._why=this.value;save();renderWhy()});
+$("focus").addEventListener("input",function(){data._focus=this.value;save();renderWhy()});
+document.addEventListener("input",function(e){var g=e.target.dataset&&e.target.dataset.g;if(!g)return;(data._goals=data._goals||{})[g]=e.target.value;save();calc()});
+function streakRender(){
+  var a=runs("clean"),c=a[a.length-1]||0,b=Math.max.apply(null,a.concat([0])),tot=0,i,d;
+  for(i=0;i<a.length;i++)if((data[key(addDays(START,i))]||{}).clean)tot++;
+  $("cs").textContent=c;$("cbest").textContent="Best: "+b+" days · Total clean days: "+tot+" · Urges survived: "+sosTotal();
+  $("whyi").value=data._why||"";$("focus").value=data._focus||"";wreview();
+  var nx=MS.filter(function(m){return m>c})[0]||c+30;$("cnext").style.width=Math.min(100,c/nx*100)+"%";$("cnl").textContent=(nx-c)+" more day"+(nx-c===1?"":"s")+" to the "+nx+"-day milestone";
+  var L=a.slice(-60),m=Math.max(5,b),X=function(k){return 30+(L.length>1?k/(L.length-1):0)*300},Y=function(v){return 105-v/m*85};
+  var ln=L.map(function(v,k){return(k?"L":"M")+X(k).toFixed(1)+" "+Y(v).toFixed(1)}).join(" ");
+  $("cch").innerHTML='<g stroke="var(--line)"><line x1="30" x2="330" y1="20" y2="20"/><line x1="30" x2="330" y1="105" y2="105"/></g><g fill="var(--mute)" font-size="10"><text x="26" y="23" text-anchor="end">'+m+'</text><text x="26" y="108" text-anchor="end">0</text></g>'
+   +'<path d="'+ln+' L'+X(L.length-1).toFixed(1)+' 105 L'+X(0).toFixed(1)+' 105Z" fill="var(--accbg)"/><path d="'+ln+'" fill="none" stroke="var(--acc)" stroke-width="2.5" stroke-linejoin="round"/>'
+   +'<circle cx="'+X(L.length-1).toFixed(1)+'" cy="'+Y(L[L.length-1]).toFixed(1)+'" r="4" fill="var(--acc)"/>';
+  var h="";
+  CHECKS.forEach(function(ch){
+    var ar=runs(ch[0]),cu=ar[ar.length-1]||0,bs=Math.max.apply(null,ar.concat([0])),dots="",j;
+    for(j=13;j>=0;j--){d=addDays(now,-j);if(d<START)continue;dots+='<span style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:3px;background:'+((data[key(d)]||{})[ch[0]]?"var(--acc)":"var(--line)")+'"></span>'}
+    h+='<div class="q" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><p style="margin:0 0 4px">'+ch[1]+'</p><div>'+dots+'</div></div><div style="text-align:right"><b>🔥 '+cu+'</b><br><small>best '+bs+'</small></div></div>';
+  });
+  $("slist").innerHTML=h;
+}
+function tab(n){
+  $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;
+  $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";
+  if(n===1){cowRender();setTimeout(function(){var st=cowState();say(st.night?pick(GRUMPY):st.asleep?"Zzz… tap me to wake me up 🐮💤":greet())},400)}
+  if(n===2)streakRender();
+  window.scrollTo(0,0);
+}
+$("tabT").onclick=function(){tab(0)};$("tabC").onclick=function(){tab(1)};$("tabS").onclick=function(){tab(2)};
 var WX="part",wtxt="manual · tap to change",MODES=["sun","part","cloud","rain","storm","snow","fog"],
 LBL={sun:"Sunny",part:"Partly cloudy",cloud:"Cloudy",rain:"Rain",storm:"Thunderstorm",snow:"Snow",fog:"Fog"},
 EM={sun:"☀️",part:"🌤",cloud:"☁️",rain:"🌧",storm:"⛈",snow:"❄️",fog:"🌫"},
