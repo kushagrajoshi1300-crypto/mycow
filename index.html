@@ -109,11 +109,23 @@ svg.sc *{transform-box:fill-box}
 .wg p.wl{font-style:italic;font-size:16px;margin-bottom:0}
 .wf{margin-top:10px;font-size:13px;color:#e8c36a;border-top:1px solid rgba(184,134,43,.4);padding-top:8px}
 .wgh{font-size:11px;color:#a8803a;margin-top:8px}
+.sub{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:12px 0 6px}.sub:first-child{margin-top:0}
+.chk.nn{border:2px solid #b8862b}.chk.nn.on{border-color:var(--acc)}
+.tabs button{padding:11px 2px;font-size:14px}
+.gt{display:flex;gap:6px;margin-bottom:12px}.gt button{flex:1;padding:9px 2px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:13px}.gt button.on{background:var(--accbg);border-color:var(--acc)}
+@keyframes bcz{50%{transform:scale(1.07)}}
+#bcb{display:block;margin:14px auto;width:180px;height:180px;border-radius:50%;border:4px solid var(--acc);background:var(--accbg);color:var(--ink);font:700 64px system-ui;animation:bcz 10s ease-in-out infinite}
+#stb{display:block;margin:14px auto;width:170px;height:170px;border-radius:50%;border:4px solid var(--acc);background:var(--accbg);color:var(--ink);font:700 20px system-ui}
+#sand{width:100%;height:320px;border-radius:12px;touch-action:none;display:block;border:1px solid var(--line)}
+#mp button{height:100px;border:0;border-radius:18px;opacity:.45;transition:opacity .1s,transform .1s}
+.gc{text-align:center}
+.gt{overflow-x:auto}.gt button{min-width:64px;white-space:nowrap}
+.row button.sel{background:var(--accbg);border-color:var(--acc)}
 </style>
 </head>
 <body>
 <main>
-<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">My Cow 🐄</button><button id="tabS">Streaks 🔥</button></div>
+<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">Cow 🐄</button><button id="tabS">Streaks 🔥</button><button id="tabG">Games 🎮</button></div>
 <div id="pgT">
   <div class="nav">
     <button id="prev" aria-label="Previous day">‹</button>
@@ -235,6 +247,27 @@ svg.sc *{transform-box:fill-box}
 <div class="hint">Your cow grows a little every day for a year. Its health follows your ticks: mostly the last 7 days, plus your overall record.</div></div>
 <div class="card"><h3>Today's 5 quotes</h3><div id="qs"></div></div>
 </div>
+<div id="pgG" hidden>
+<div class="gt"><button data-g="0" class="on">🌬 Count</button><button data-g="4">🫧 Match</button><button data-g="1">🏖 Sand</button><button data-g="2">👆 Slow</button><button data-g="3">🧩 Memory</button></div>
+<div class="card gp gc" id="g0"><h3>Count 10 breaths</h3><div class="hint">Tap once after each breath out. Lose count? Restart. No rush, no score.</div>
+<button id="bcb"><span id="bcn">0</span></button><div class="hint" id="bcm">Tap to begin</div><div class="row"><button id="bcr" class="mini">I lost count · restart</button></div></div>
+<div class="card gp" id="g1" hidden><h3>Zen sand garden</h3><div class="hint" style="margin-bottom:8px">Drag your finger to rake the sand. Nothing to win.</div>
+<canvas id="sand"></canvas><div class="row"><button id="stone" class="mini">🪨 Add a stone</button><button id="smooth" class="mini">Smooth the sand</button><button id="rkm" class="mini">Brush: finger</button></div></div>
+<div class="card gp gc" id="g2" hidden><h3>Slow tap</h3><div class="hint" id="sth"></div>
+<div class="row" id="stt"><button data-t="3" class="mini sel">3 s</button><button data-t="5" class="mini">5 s</button><button data-t="7" class="mini">7 s</button><button data-t="10" class="mini">10 s</button></div>
+<div class="row"><input type="number" id="stc" inputmode="numeric" min="1" max="60" placeholder="Custom seconds" style="margin-top:0"></div>
+<button id="stb">Tap</button><div id="stm" class="hint">Tap once to start</div><div id="sts" class="hint"></div><div class="row"><button id="str" class="mini">Reset</button></div></div>
+<div class="card gp gc" id="g3" hidden><h3>Memory sequence</h3><div class="hint" style="margin-bottom:10px">Watch the pattern, then repeat it. It grows by one each round.</div>
+<div id="mp" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:260px;margin:0 auto"><button data-p="0" style="background:#e8607a"></button><button data-p="1" style="background:#ffd24d"></button><button data-p="2" style="background:#6fcf9b"></button><button data-p="3" style="background:#6fb5ff"></button></div>
+<div class="big" id="ml" style="font-size:28px;margin-top:12px">Level 0</div><div id="mm" class="hint">Tap start</div><div class="row"><button id="mst" class="mini">Start</button></div></div>
+<div class="card gp gc" id="g4" hidden><h3>Match the breath</h3><div class="hint">A circle slowly grows and shrinks. Breathe comfortably in sync with it. Never force or hold your breath.</div>
+<div class="row" id="mtm" style="margin-top:10px"><button data-m="5" class="mini">5 min</button><button data-m="10" class="mini sel">10 min</button><button data-m="15" class="mini">15 min</button><button data-m="20" class="mini">20 min</button></div>
+<div class="row"><input type="number" id="mcus" inputmode="numeric" min="1" max="120" placeholder="Custom minutes" style="margin-top:0"></div>
+<div class="row" id="mpace"><button data-p="4,6" class="mini sel">In 4 · Out 6</button><button data-p="5,5" class="mini">5 · 5</button><button data-p="5,7" class="mini">5 · 7</button></div>
+<div style="height:250px;display:grid;place-items:center"><div id="mcirc" style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accbg),var(--acc));opacity:.85;transform:scale(.8)"></div></div>
+<div id="mlab" class="big" style="font-size:22px">Ready when you are</div><div id="mtime" class="hint">10:00 · 0 cycles</div>
+<div class="row"><button id="mgo" class="mini" style="background:var(--acc);color:var(--card);font-weight:700;border-color:var(--acc)">Begin</button></div><div class="hint" id="mtot" style="margin-top:8px"></div></div>
+</div>
 <div id="pgS" hidden>
 <div class="card"><h3>My why</h3><textarea id="whyi" placeholder="Why am I quitting? Who am I becoming? Write it in your own words."></textarea><div class="row"><button id="vscroll" class="mini">📜 View as golden scroll</button></div><div class="hint">Shown on your home page, in the urge screen, and the cow reminds you now and then.</div></div>
 <div class="card"><h3>Clean-day streak</h3>
@@ -264,7 +297,7 @@ svg.sc *{transform-box:fill-box}
 <div id="pop"></div>
 <script>
 (function(){
-var KEY="ritual-v1",START=new Date(2026,9,10),END=new Date(2027,9,10);
+var KEY="ritual-v1",START=new Date(2026,9,12),END=new Date(2027,9,12);
 var CHECKS=[
  ["clean","Stayed strong 💪",""],
  ["work","Worked out (lifting)",""],
@@ -275,7 +308,7 @@ var CHECKS=[
  ["phone","Phone out of bed by 11:30 PM–12 AM","Charge it away from the bed"],
  ["med","Meditation / breathing 🧘",""]
 ];
-var data={};
+var data={},NNK=["med","read","clean"];
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function pad(n){return n<10?"0"+n:""+n}
@@ -306,11 +339,12 @@ function render(){
   $("prog").style.width=(n/tot*100)+"%";
   $("prev").disabled=cur<=START;$("next").disabled=cur>=END;
   $("prev").style.opacity=cur<=START?.4:1;$("next").style.opacity=cur>=END?.4:1;
-  var h="";
-  CHECKS.forEach(function(c){
-    var s=streak(c[0]);
-    h+='<button class="chk'+(r[c[0]]?" on":"")+'" data-c="'+c[0]+'"><span class="box">✓</span><span>'+c[1]+(c[2]?"<small>"+c[2]+"</small>":"")+'</span>'+(s>1?'<span class="s">🔥 '+s+'</span>':"")+'</button>';
-  });
+  var h="",item=function(c){var s=streak(c[0]);return'<button class="chk'+(r[c[0]]?" on":"")+(NNK.indexOf(c[0])>-1?" nn":"")+'" data-c="'+c[0]+'"><span class="box">✓</span><span>'+c[1]+(c[2]?"<small>"+c[2]+"</small>":"")+'</span>'+(s>1?'<span class="s">🔥 '+s+'</span>':"")+'</button>'},
+  byk=function(k){return CHECKS.filter(function(c){return c[0]===k})[0]};
+  h+='<div class="sub">🔒 Non-negotiables'+(NNK.every(function(k){return r[k]})?" · all done ✅":"")+'</div>';
+  NNK.forEach(function(k){h+=item(byk(k))});
+  h+='<div class="sub">Also today</div>';
+  CHECKS.forEach(function(c){if(NNK.indexOf(c[0])<0)h+=item(c)});
   $("checks").innerHTML=h;
   document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
   document.querySelectorAll("[data-g]").forEach(function(el){el.value=(data._goals||{})[el.dataset.g]||""});
@@ -326,6 +360,7 @@ function calc(){
     gb+='<div class="hint" style="margin-top:8px">'+x[1]+': '+x[2]+' / '+goal+' '+x[3]+' · '+(x[2]>=goal?(over?(x[2]-goal)+' over':'goal reached 🎯'):(goal-x[2])+' left')+'</div><div class="bar" style="margin:3px 0 0"><i style="width:'+pct+'%;background:'+(over?"var(--bad)":"var(--acc)")+'"></i></div>'});
   $("gbars").innerHTML=gb;
 }
+function wscore(k){var r=data[k]||{},s=0,t=0;CHECKS.forEach(function(c){var w=NNK.indexOf(c[0])>-1?2:1;t+=w;if(r[c[0]])s+=w});return s/t}
 function score(k){var r=data[k]||{},s=0;CHECKS.forEach(function(c){if(r[c[0]])s++});return s}
 function cal(){
   var h="",d=START,ck=key(cur);
@@ -358,7 +393,8 @@ function wchart(){
 $("wrng").addEventListener("click",function(e){var b=e.target.closest("[data-r]");if(!b)return;wr=+b.dataset.r;wchart()});
 $("checks").addEventListener("click",function(e){
   var b=e.target.closest("[data-c]");if(!b)return;
-  var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();if(r[b.dataset.c])celebrate(b.dataset.c,streak(b.dataset.c));
+  var r=rec(key(cur));r[b.dataset.c]=!r[b.dataset.c];save();render();var c=b.dataset.c;
+  if(r[c]){if(NNK.indexOf(c)>-1&&NNK.every(function(k){return r[k]})){var ra=runs("nn"),nn=ra[ra.length-1]||1;popup("🔒","All 3 done!","Non-negotiable streak: "+nn+" day"+(nn===1?"":"s"),"Meditation, reading, staying strong. That's the whole game.",true)}else celebrate(c,streak(c))}
 });
 document.addEventListener("input",function(e){
   var k=e.target.dataset&&e.target.dataset.k;if(!k)return;
@@ -437,7 +473,7 @@ var sd=7;function rn(){sd=sd*16807%2147483647;return sd/2147483647}
 for(var qi=QL.length-1;qi>0;qi--){var qj=Math.floor(rn()*(qi+1)),tq=QL[qi];QL[qi]=QL[qj];QL[qj]=tq}
 function cowRender(){
   var n=Math.min(TOT,Math.max(1,Math.round((now-START)/864e5)+1)),sum=0,wk=0,wc=0;
-  for(var i=0;i<n;i++){var sc=score(key(addDays(START,i)))/CHECKS.length;sum+=sc;if(i>=n-7){wk+=sc;wc++}}
+  for(var i=0;i<n;i++){var sc=wscore(key(addDays(START,i)));sum+=sc;if(i>=n-7){wk+=sc;wc++}}
   var ov=sum/n,w=wk/wc,h=Math.min(1,.15+.85*(.6*w+.4*ov));
   var g=(n-1)/(TOT-1),sz=.42+.58*g,hk=1+.35*(1-g);
   $("cow").setAttribute("transform","translate(185 262) scale("+sz+")");
@@ -540,7 +576,7 @@ var MS=[3,5,7,10,14,21,30,45,60,90,100,150,200,365],
 CL={clean:"Clean-day",work:"Workout",cardio:"Cardio",junk:"Clean-eating",read:"Reading",wrote:"Writing",phone:"Early-phone",med:"Meditation"},
 CM={clean:["Your brain is rewiring. Keep going!","Stronger every single day 💪","Urges lose their power when you ignore them.","This is who you are becoming."],other:["Consistency beats intensity.","Look at you go! 🌟","Habits are building the new you.","Small wins, big future."]};
 function runs(f){var n=Math.min(TOT,Math.max(1,Math.round((now-START)/864e5)+1)),a=[],p=0,i,t,d;
-  for(i=0;i<n;i++){d=addDays(START,i);t=(data[key(d)]||{})[f];p=t?p+1:(i===n-1&&d.getTime()===now.getTime()?p:0);a.push(p)}return a}
+  for(i=0;i<n;i++){d=addDays(START,i);t=f==="nn"?NNK.every(function(k){return(data[key(d)]||{})[k]}):(data[key(d)]||{})[f];p=t?p+1:(i===n-1&&d.getTime()===now.getTime()?p:0);a.push(p)}return a}
 function popup(em,title,sub,msg,big){
   var el=$("pop"),i,d,cols=["#f78fb3","#ffd24d","#6fcf9b","#6fb5ff","#c9a0ff"];
   el.innerHTML='<div class="pc"><div style="font-size:48px">'+em+'</div><b>'+title+'</b><div>'+sub+'</div><div class="hint" style="margin-top:6px">'+msg+'</div></div>';
@@ -629,21 +665,98 @@ function streakRender(){
    +'<path d="'+ln+' L'+X(L.length-1).toFixed(1)+' 105 L'+X(0).toFixed(1)+' 105Z" fill="var(--accbg)"/><path d="'+ln+'" fill="none" stroke="var(--acc)" stroke-width="2.5" stroke-linejoin="round"/>'
    +'<circle cx="'+X(L.length-1).toFixed(1)+'" cy="'+Y(L[L.length-1]).toFixed(1)+'" r="4" fill="var(--acc)"/>';
   var h="";
-  CHECKS.forEach(function(ch){
+  [["nn","All 3 non-negotiables 🔒"]].concat(CHECKS).forEach(function(ch){
     var ar=runs(ch[0]),cu=ar[ar.length-1]||0,bs=Math.max.apply(null,ar.concat([0])),dots="",j;
     for(j=13;j>=0;j--){d=addDays(now,-j);if(d<START)continue;dots+='<span style="display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:3px;background:'+((data[key(d)]||{})[ch[0]]?"var(--acc)":"var(--line)")+'"></span>'}
     h+='<div class="q" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><p style="margin:0 0 4px">'+ch[1]+'</p><div>'+dots+'</div></div><div style="text-align:right"><b>🔥 '+cu+'</b><br><small>best '+bs+'</small></div></div>';
   });
   $("slist").innerHTML=h;
 }
+function gb(){return data._gbest||(data._gbest={})}
+var bc=0;
+$("bcb").onclick=function(){bc++;if(bc>=10){bc=0;var g=gb();g.breath=(g.breath||0)+1;save();$("bcn").textContent="🎉";$("bcm").textContent="10 breaths done. Sessions completed: "+g.breath;setTimeout(function(){$("bcn").textContent="0"},1800)}else{$("bcn").textContent=bc;$("bcm").textContent=bc+" / 10 · breathe out slowly…"}};
+$("bcr").onclick=function(){bc=0;$("bcn").textContent="0";$("bcm").textContent="No problem. Start again from 1."};
+var sx,sw=0,drawing=false,lx=0,ly=0;
+function sandClear(){sx.fillStyle="#e7d3a1";sx.fillRect(0,0,sw,320);for(var i=0;i<900;i++){sx.fillStyle="rgba(120,90,40,"+(Math.random()*.15)+")";sx.fillRect(Math.random()*sw,Math.random()*320,1.5,1.5)}}
+function sandInit(){var c=$("sand"),w=c.clientWidth;if(!w||w===sw)return;sw=w;var d=window.devicePixelRatio||1;c.width=w*d;c.height=320*d;sx=c.getContext("2d");sx.setTransform(d,0,0,d,0,0);sandClear()}
+var rakeMode=false;
+function rake(x1,y1,x2,y2){sx.lineCap="round";sx.lineJoin="round";
+  var offs=rakeMode?[-10,0,10]:[0],a=Math.atan2(y2-y1,x2-x1)+Math.PI/2,ox=Math.cos(a),oy=Math.sin(a);
+  offs.forEach(function(o){var ax=x1+ox*o,ay=y1+oy*o,bx=x2+ox*o,by=y2+oy*o,k=rakeMode?.5:1;
+    [[0,0,"rgba(120,90,40,.28)",10*k],[0,0,"rgba(95,65,28,.38)",5*k],[3,3,"rgba(255,245,215,.5)",2]].forEach(function(l){
+      sx.beginPath();sx.moveTo(ax+l[0],ay+l[1]);sx.lineTo(bx+l[0],by+l[1]);sx.strokeStyle=l[2];sx.lineWidth=l[3];sx.stroke()})})}
+$("rkm").onclick=function(){rakeMode=!rakeMode;this.textContent="Brush: "+(rakeMode?"rake":"finger")};
+function sp(e){var r=$("sand").getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
+$("sand").addEventListener("pointerdown",function(e){if(!sx)return;drawing=true;var p=sp(e);lx=p[0];ly=p[1];try{this.setPointerCapture(e.pointerId)}catch(x){}});
+$("sand").addEventListener("pointermove",function(e){if(!drawing)return;var p=sp(e);if(Math.hypot(p[0]-lx,p[1]-ly)<4)return;rake(lx,ly,p[0],p[1]);lx=p[0];ly=p[1]});
+$("sand").addEventListener("pointerup",function(){drawing=false});$("sand").addEventListener("pointercancel",function(){drawing=false});
+$("smooth").onclick=function(){if(sx)sandClear()};
+$("stone").onclick=function(){if(!sx)return;var x=40+Math.random()*(sw-80),y=40+Math.random()*240,r=14+Math.random()*14,g=sx.createRadialGradient(x-r/3,y-r/3,2,x,y,r*1.2);g.addColorStop(0,"#b9b4aa");g.addColorStop(1,"#5d5a55");
+  sx.fillStyle="rgba(60,40,10,.3)";sx.beginPath();sx.ellipse(x+4,y+5,r*1.15,r*.8,0,0,7);sx.fill();sx.fillStyle=g;sx.beginPath();sx.ellipse(x,y,r*1.1,r*.8,0,0,7);sx.fill()};
+var st=0,sstreak=0,sT=3;
+function sKey(){return sT===3?"slow":"slow"+sT}
+function slowUpd(){$("sts").textContent="Streak "+sstreak+" · Best at "+sT+"s: "+(gb()[sKey()]||0);$("sth").textContent="Tap every "+sT+" seconds, as evenly as you can (give or take "+Math.max(.4,sT*.13).toFixed(1)+"s). Count in your head. Rushing breaks it."}
+function sReset(){st=0;sstreak=0;$("stm").textContent="Tap once to start";slowUpd()}
+$("stb").onclick=function(){var n=Date.now(),g=gb(),tol=Math.max(.4,sT*.13);
+  if(!st){st=n;$("stm").textContent="Started. Tap again in exactly "+sT+" seconds.";return}
+  var d=(n-st)/1000;st=n;
+  if(Math.abs(d-sT)<=tol){sstreak++;if(sstreak>(g[sKey()]||0)){g[sKey()]=sstreak;save()}$("stm").textContent=d.toFixed(2)+"s ✓ Steady rhythm"}
+  else{$("stm").textContent=d.toFixed(2)+"s · "+(d<sT?"Too fast, slow down 🐢":"A bit slow, no worries")+". Streak reset.";sstreak=0}
+  slowUpd()};
+$("str").onclick=sReset;
+$("stt").addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(!b)return;sT=+b.dataset.t;$("stc").value="";msel(this,b);sReset()});
+$("stc").addEventListener("input",function(){var v=+this.value;if(v>=1&&v<=60){sT=v;msel($("stt"),null);sReset()}});
+var seq=[],mpos=0,mbusy=false,FR=[262,330,392,494];
+function beep(f){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.08,t+.02);g.gain.linearRampToValueAtTime(0,t+.3);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.32)}
+function mflash(i,ms){var b=$("mp").children[i];b.style.opacity=1;b.style.transform="scale(.96)";beep(FR[i]);setTimeout(function(){b.style.opacity="";b.style.transform=""},ms||320)}
+function mplay(){mbusy=true;mpos=0;$("mm").textContent="Watch…";seq.forEach(function(p,k){setTimeout(function(){mflash(p)},500+k*650)});setTimeout(function(){mbusy=false;$("mm").textContent="Your turn"},500+seq.length*650)}
+function mnext(){seq.push(Math.floor(Math.random()*4));$("ml").textContent="Level "+seq.length;mplay()}
+$("mp").addEventListener("click",function(e){var b=e.target.closest("[data-p]");if(!b||mbusy||!seq.length)return;var p=+b.dataset.p;mflash(p,200);
+  if(p!==seq[mpos]){var g=gb(),lv=seq.length-1;if(lv>(g.mem||0)){g.mem=lv;save()}$("mm").textContent="Missed it. You reached level "+lv+" · Best "+(g.mem||0)+". Tap Start to try again.";seq=[];return}
+  mpos++;if(mpos===seq.length){mbusy=true;$("mm").textContent="Nice ✓";setTimeout(mnext,800)}});
+$("mst").onclick=function(){seq=[];mnext()};
+var mMin=10,mInh=4,mExh=6,mRun=false,mT0=0,mRaf=0;
+function ease(t){return .5-.5*Math.cos(Math.PI*t)}
+function mTot(){var r=data[tk()]||{};$("mtot").textContent=r.mmin?"Meditated today: "+r.mmin+" min":""}
+function mIdle(){$("mcirc").style.transform="scale(.8)";$("mgo").textContent="Begin"}
+function mTick(){
+  if(!mRun)return;
+  var el=(Date.now()-mT0)/1000,left=Math.max(0,mMin*60-el),cyc=mInh+mExh,ph=el%cyc,sc,lab;
+  if(ph<mInh){sc=.55+1.05*ease(ph/mInh);lab="Breathe in…"}else{sc=1.6-1.05*ease((ph-mInh)/mExh);lab="Breathe out…"}
+  $("mcirc").style.transform="scale("+sc+")";$("mlab").textContent=lab;
+  $("mtime").textContent=pad(Math.floor(left/60))+":"+pad(Math.floor(left%60))+" · "+Math.floor(el/cyc)+" cycles";
+  if(left<=0){mFinish();return}
+  mRaf=requestAnimationFrame(mTick)
+}
+function mFinish(){
+  mRun=false;cancelAnimationFrame(mRaf);mIdle();$("mlab").textContent="Session complete 🙏";
+  var r=rec(tk());r.mmin=(+r.mmin||0)+mMin;r.med=true;save();render();mTot();
+  beep(392);setTimeout(function(){beep(523)},350);try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
+  var all=NNK.every(function(k){return r[k]});
+  popup("🧘",all?"All 3 done!":"Meditation done",mMin+" minutes of breathing",all?"Meditation, reading, staying strong. That's the whole game.":"Today's meditation is ticked off.",all);
+}
+function msel(box,b){box.querySelectorAll("button").forEach(function(x){x.classList.toggle("sel",x===b)})}
+$("mtm").addEventListener("click",function(e){var b=e.target.closest("[data-m]");if(!b||mRun)return;mMin=+b.dataset.m;$("mcus").value="";msel(this,b);$("mtime").textContent=mMin+":00 · 0 cycles"});
+$("mcus").addEventListener("input",function(){if(mRun)return;var v=Math.round(+this.value);if(v>=1&&v<=120){mMin=v;msel($("mtm"),null);$("mtime").textContent=mMin+":00 · 0 cycles"}});
+$("mpace").addEventListener("click",function(e){var b=e.target.closest("[data-p]");if(!b||mRun)return;var p=b.dataset.p.split(",");mInh=+p[0];mExh=+p[1];msel(this,b)});
+$("mgo").onclick=function(){
+  if(mRun){mRun=false;cancelAnimationFrame(mRaf);mIdle();$("mlab").textContent="Stopped. Come back whenever you're ready.";return}
+  ac();mRun=true;mT0=Date.now();this.textContent="Stop";mTick();
+};
+mTot();
+document.querySelector(".gt").addEventListener("click",function(e){var b=e.target.closest("[data-g]");if(!b)return;
+  document.querySelectorAll(".gt button").forEach(function(x){x.className=x===b?"on":""});
+  document.querySelectorAll(".gp").forEach(function(x){x.hidden=x.id!=="g"+b.dataset.g});if(b.dataset.g==="1")sandInit()});
+slowUpd();
 function tab(n){
-  $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;
-  $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";
+  $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;$("pgG").hidden=n!==3;
+  $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";$("tabG").className=n===3?"on":"";
   if(n===1){cowRender();setTimeout(function(){var st=cowState();say(st.night?pick(GRUMPY):st.asleep?"Zzz… tap me to wake me up 🐮💤":greet())},400)}
   if(n===2)streakRender();
+  if(n===3)sandInit();
   window.scrollTo(0,0);
 }
-$("tabT").onclick=function(){tab(0)};$("tabC").onclick=function(){tab(1)};$("tabS").onclick=function(){tab(2)};
+$("tabT").onclick=function(){tab(0)};$("tabC").onclick=function(){tab(1)};$("tabS").onclick=function(){tab(2)};$("tabG").onclick=function(){tab(3)};
 var WX="part",wtxt="manual · tap to change",MODES=["sun","part","cloud","rain","storm","snow","fog"],
 LBL={sun:"Sunny",part:"Partly cloudy",cloud:"Cloudy",rain:"Rain",storm:"Thunderstorm",snow:"Snow",fog:"Fog"},
 EM={sun:"☀️",part:"🌤",cloud:"☁️",rain:"🌧",storm:"⛈",snow:"❄️",fog:"🌫"},
