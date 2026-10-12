@@ -297,7 +297,7 @@ svg.sc *{transform-box:fill-box}
 <div id="pop"></div>
 <script>
 (function(){
-var KEY="ritual-v1",START=new Date(2026,9,12),END=new Date(2027,9,12);
+var KEY="ritual-v1",START=new Date(2026,9,13),END=new Date(2027,9,13);
 var CHECKS=[
  ["clean","Stayed strong 💪",""],
  ["work","Worked out (lifting)",""],
@@ -310,6 +310,8 @@ var CHECKS=[
 ];
 var data={},NNK=["med","read","clean"];
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
+if(!data._anchor){data._anchor="2026-10-13";try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+var ap=data._anchor.split("-");START=new Date(+ap[0],+ap[1]-1,+ap[2]);END=new Date(+ap[0]+1,+ap[1]-1,+ap[2]);
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function pad(n){return n<10?"0"+n:""+n}
 function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
