@@ -133,6 +133,7 @@ svg.sc *{transform-box:fill-box}
     <button id="next" aria-label="Next day">›</button>
   </div>
   <div class="bar"><i id="prog"></i></div>
+  <div id="goals" class="card"><h3>🎯 My 3 goals</h3><div id="glist"></div></div>
   <div id="whyb" class="wg" hidden><div class="wgt">✦ MY WHY ✦</div><div id="whyt"></div><div class="wgh">Tap to open as a scroll</div></div>
   <button id="sosb" class="sosb">🆘 SOS</button>
 
@@ -297,7 +298,7 @@ svg.sc *{transform-box:fill-box}
 <div id="pop"></div>
 <script>
 (function(){
-var KEY="ritual-v1",START=new Date(2026,9,13),END=new Date(2027,9,13);
+var KEY="ritual-v1",START=new Date(2026,9,21),END=new Date(2027,9,21);
 var CHECKS=[
  ["clean","Stayed strong 💪",""],
  ["work","Worked out (lifting)",""],
@@ -310,7 +311,7 @@ var CHECKS=[
 ];
 var data={},NNK=["med","read","clean"];
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
-if(!data._anchor){data._anchor="2026-10-13";try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+if(data._anchorV!==2){data._anchor="2026-10-21";data._anchorV=2;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 var ap=data._anchor.split("-");START=new Date(+ap[0],+ap[1]-1,+ap[2]);END=new Date(+ap[0]+1,+ap[1]-1,+ap[2]);
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function pad(n){return n<10?"0"+n:""+n}
@@ -350,7 +351,7 @@ function render(){
   $("checks").innerHTML=h;
   document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
   document.querySelectorAll("[data-g]").forEach(function(el){el.value=(data._goals||{})[el.dataset.g]||""});
-  calc();cal();wchart();renderWhy();
+  calc();cal();wchart();renderWhy();renderGoals();
 }
 function calc(){
   var r=data[key(cur)]||{},p=+r.p||0,c=+r.c||0,f=+r.f||0;
@@ -750,6 +751,9 @@ document.querySelector(".gt").addEventListener("click",function(e){var b=e.targe
   document.querySelectorAll(".gt button").forEach(function(x){x.className=x===b?"on":""});
   document.querySelectorAll(".gp").forEach(function(x){x.hidden=x.id!=="g"+b.dataset.g});if(b.dataset.g==="1")sandInit()});
 slowUpd();
+var GOALS=["💼 Switch to a job paying more than ₹1 lakh per month","🔥 Reach 14% body fat, shredded","🏃 Heal my knees and run a half marathon"];
+function renderGoals(){var d=data._gdone||{};$("glist").innerHTML=GOALS.map(function(g,i){return'<button class="chk'+(d[i]?" on":"")+'" data-gi="'+i+'"><span class="box">✓</span><span>'+g+'</span></button>'}).join("")}
+$("glist").addEventListener("click",function(e){var b=e.target.closest("[data-gi]");if(!b)return;var d=data._gdone=data._gdone||{},i=b.dataset.gi;d[i]=!d[i];save();renderGoals();if(d[i])popup("🏆","Goal achieved!","Your hard work paid off","Take a moment to be proud of this.",true)});
 function tab(n){
   $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;$("pgG").hidden=n!==3;
   $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";$("tabG").className=n===3?"on":"";
