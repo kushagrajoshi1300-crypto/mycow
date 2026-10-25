@@ -121,11 +121,22 @@ svg.sc *{transform-box:fill-box}
 .gc{text-align:center}
 .gt{overflow-x:auto}.gt button{min-width:64px;white-space:nowrap}
 .row button.sel{background:var(--accbg);border-color:var(--acc)}
+#zov{position:fixed;inset:0;background:var(--bg);color:var(--ink);overflow:auto;z-index:60;padding:calc(14px + env(safe-area-inset-top,0px)) 14px calc(30px + env(safe-area-inset-bottom,0px))}
+#zov[hidden]{display:none}
+.row2{display:flex;gap:8px}.row2 .sosb{flex:1}
+.zen{text-align:center;font-style:italic;color:var(--mute);font-size:14px;margin:0 0 12px;padding:0 8px}
+#fcm{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:80;display:grid;place-items:center;padding:20px}
+#fcm[hidden]{display:none}.fcw{width:100%;max-width:420px}
+#fcc,.fcard{background:#fffaf0;color:#2a2418;border:2px solid #b8862b;border-radius:18px;padding:22px 20px;min-height:220px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.4);cursor:pointer;font-family:"IM Fell English",Georgia,serif}
+.fcb{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#8a6a2a;margin-bottom:10px;font-family:system-ui,sans-serif}
+.fct{font-size:25px;font-weight:700;line-height:1.25;margin-bottom:12px}.fct2{font-size:19px;line-height:1.5}
+#fcc .hint,.fcard .hint{color:#8a7a5a}
+#fcm .row{margin-top:12px}
 </style>
 </head>
 <body>
 <main>
-<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">Cow 🐄</button><button id="tabS">Streaks 🔥</button><button id="tabG">Games 🎮</button></div>
+<div class="tabs"><button id="tabT" class="on">Tracker</button><button id="tabC">Cow 🐄</button><button id="tabS">Streaks 🔥</button><button id="tabR">Read 📖</button></div>
 <div id="pgT">
   <div class="nav">
     <button id="prev" aria-label="Previous day">‹</button>
@@ -133,9 +144,14 @@ svg.sc *{transform-box:fill-box}
     <button id="next" aria-label="Next day">›</button>
   </div>
   <div class="bar"><i id="prog"></i></div>
-  <div id="goals" class="card"><h3>🎯 My 3 goals</h3><div id="glist"></div></div>
+  <div id="mis" class="card"><h3>🎯 6-month mission</h3><div id="mph" style="font-weight:700;font-size:17px"></div><div class="hint" id="mfo" style="margin:2px 0 8px"></div>
+<div class="bar" style="margin:0"><i id="mbar"></i></div><div class="hint" id="mtxt"></div>
+<div class="hint" style="margin-top:4px">Prep run: Oct 26 – Nov 12 · Main year: Nov 13, 2026 – Nov 13, 2027</div>
+<div class="hint" style="margin-top:6px">Knee first: get a physiotherapist or orthopedic doctor's guidance before long walks, runs and the trek.</div></div>
+<div id="goals" class="card"><h3>My goals</h3><div id="glist"></div></div>
+<div id="zen" class="zen"></div>
   <div id="whyb" class="wg" hidden><div class="wgt">✦ MY WHY ✦</div><div id="whyt"></div><div class="wgh">Tap to open as a scroll</div></div>
-  <button id="sosb" class="sosb">🆘 SOS</button>
+  <div class="row2"><button id="sosb" class="sosb">🆘 SOS</button><button id="zb" class="sosb">🧘 Zazen timer</button></div>
 
   <div class="card">
     <h3>Daily ritual</h3>
@@ -145,6 +161,7 @@ svg.sc *{transform-box:fill-box}
   <div class="card">
     <h3>Morning</h3>
     <label>Body weight (kg)<input type="number" inputmode="decimal" step="0.1" data-k="wt"></label>
+    <label style="margin-top:8px">Waist at navel (in), once a week<input type="number" inputmode="decimal" step="0.1" data-k="waist"></label>
     <div class="row" id="wrng"><button data-r="30">30 days</button><button data-r="90">90 days</button><button data-r="0">All</button></div>
     <svg id="wch" viewBox="0 0 340 150" style="width:100%;height:auto;margin-top:8px"></svg>
     <div class="hint" id="wsum"></div>
@@ -153,7 +170,7 @@ svg.sc *{transform-box:fill-box}
   <div class="card">
     <h3>Hours invested</h3>
     <div class="grid">
-      <div><label>Deep work on my own thing (hrs)<input type="number" inputmode="decimal" step="0.25" data-k="hwork"></label></div>
+      <div><label>Deep work: job prep & building (hrs)<input type="number" inputmode="decimal" step="0.25" data-k="hwork"></label></div>
       <div><label>Learning / study (hrs)<input type="number" inputmode="decimal" step="0.25" data-k="hlearn"></label></div>
     </div>
     <div class="hint" id="hsum"></div>
@@ -180,6 +197,8 @@ svg.sc *{transform-box:fill-box}
       <div><label>Sleep (hours)<input type="number" inputmode="decimal" data-k="sleep"></label></div>
       <div><label>Urge level today (0–5)<input type="number" inputmode="numeric" min="0" max="5" data-k="urge"></label></div>
       <div><label>Steps<input type="number" inputmode="numeric" data-k="steps"></label></div>
+      <div><label>Mood (1–5)<input type="number" inputmode="numeric" min="1" max="5" data-k="mood"></label></div>
+      <div><label>Energy (1–5)<input type="number" inputmode="numeric" min="1" max="5" data-k="energy"></label></div>
     </div>
     <label style="margin-top:8px">One thing I learned today<textarea data-k="learned"></textarea></label>
     <label style="margin-top:8px">Triggers / notes (what came before any urge?)<textarea data-k="note"></textarea></label>
@@ -248,26 +267,13 @@ svg.sc *{transform-box:fill-box}
 <div class="hint">Your cow grows a little every day for a year. Its health follows your ticks: mostly the last 7 days, plus your overall record.</div></div>
 <div class="card"><h3>Today's 5 quotes</h3><div id="qs"></div></div>
 </div>
-<div id="pgG" hidden>
-<div class="gt"><button data-g="0" class="on">🌬 Count</button><button data-g="4">🫧 Match</button><button data-g="1">🏖 Sand</button><button data-g="2">👆 Slow</button><button data-g="3">🧩 Memory</button></div>
-<div class="card gp gc" id="g0"><h3>Count 10 breaths</h3><div class="hint">Tap once after each breath out. Lose count? Restart. No rush, no score.</div>
-<button id="bcb"><span id="bcn">0</span></button><div class="hint" id="bcm">Tap to begin</div><div class="row"><button id="bcr" class="mini">I lost count · restart</button></div></div>
-<div class="card gp" id="g1" hidden><h3>Zen sand garden</h3><div class="hint" style="margin-bottom:8px">Drag your finger to rake the sand. Nothing to win.</div>
-<canvas id="sand"></canvas><div class="row"><button id="stone" class="mini">🪨 Add a stone</button><button id="smooth" class="mini">Smooth the sand</button><button id="rkm" class="mini">Brush: finger</button></div></div>
-<div class="card gp gc" id="g2" hidden><h3>Slow tap</h3><div class="hint" id="sth"></div>
-<div class="row" id="stt"><button data-t="3" class="mini sel">3 s</button><button data-t="5" class="mini">5 s</button><button data-t="7" class="mini">7 s</button><button data-t="10" class="mini">10 s</button></div>
-<div class="row"><input type="number" id="stc" inputmode="numeric" min="1" max="60" placeholder="Custom seconds" style="margin-top:0"></div>
-<button id="stb">Tap</button><div id="stm" class="hint">Tap once to start</div><div id="sts" class="hint"></div><div class="row"><button id="str" class="mini">Reset</button></div></div>
-<div class="card gp gc" id="g3" hidden><h3>Memory sequence</h3><div class="hint" style="margin-bottom:10px">Watch the pattern, then repeat it. It grows by one each round.</div>
-<div id="mp" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:260px;margin:0 auto"><button data-p="0" style="background:#e8607a"></button><button data-p="1" style="background:#ffd24d"></button><button data-p="2" style="background:#6fcf9b"></button><button data-p="3" style="background:#6fb5ff"></button></div>
-<div class="big" id="ml" style="font-size:28px;margin-top:12px">Level 0</div><div id="mm" class="hint">Tap start</div><div class="row"><button id="mst" class="mini">Start</button></div></div>
-<div class="card gp gc" id="g4" hidden><h3>Match the breath</h3><div class="hint">A circle slowly grows and shrinks. Breathe comfortably in sync with it. Never force or hold your breath.</div>
-<div class="row" id="mtm" style="margin-top:10px"><button data-m="5" class="mini">5 min</button><button data-m="10" class="mini sel">10 min</button><button data-m="15" class="mini">15 min</button><button data-m="20" class="mini">20 min</button></div>
-<div class="row"><input type="number" id="mcus" inputmode="numeric" min="1" max="120" placeholder="Custom minutes" style="margin-top:0"></div>
-<div class="row" id="mpace"><button data-p="4,6" class="mini sel">In 4 · Out 6</button><button data-p="5,5" class="mini">5 · 5</button><button data-p="5,7" class="mini">5 · 7</button></div>
-<div style="height:250px;display:grid;place-items:center"><div id="mcirc" style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accbg),var(--acc));opacity:.85;transform:scale(.8)"></div></div>
-<div id="mlab" class="big" style="font-size:22px">Ready when you are</div><div id="mtime" class="hint">10:00 · 0 cycles</div>
-<div class="row"><button id="mgo" class="mini" style="background:var(--acc);color:var(--card);font-weight:700;border-color:var(--acc)">Begin</button></div><div class="hint" id="mtot" style="margin-top:8px"></div></div>
+<div id="pgR" hidden>
+<div class="card"><h3>📖 Flashcards</h3>
+<select id="rsel" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit"></select>
+<div class="fcard" id="rcard" style="margin-top:10px"></div>
+<div class="row"><button id="rprev" class="mini">◀ Back</button><button id="rfav" class="mini">☆</button><button id="rnext" class="mini">Next ▶</button></div>
+<div class="hint" id="rstat" style="margin-top:8px"></div></div>
+<div class="card"><h3>Your books</h3><div id="rbooks"></div></div>
 </div>
 <div id="pgS" hidden>
 <div class="card"><h3>My why</h3><textarea id="whyi" placeholder="Why am I quitting? Who am I becoming? Write it in your own words."></textarea><div class="row"><button id="vscroll" class="mini">📜 View as golden scroll</button></div><div class="hint">Shown on your home page, in the urge screen, and the cow reminds you now and then.</div></div>
@@ -277,6 +283,7 @@ svg.sc *{transform-box:fill-box}
 <div class="bar" style="margin:10px 0 4px"><i id="cnext"></i></div><div class="hint" id="cnl"></div>
 <svg id="cch" viewBox="0 0 340 130" style="width:100%;height:auto;margin-top:8px"></svg>
 <div class="hint">The line shows your streak length each day (last 60 days). If it ever drops to zero, note the trigger and start climbing again.</div></div>
+<div class="card"><h3>📋 Prep run report · Oct 26 – Nov 12</h3><div class="hint" style="margin:0 0 6px">Your practice run. Checkpoint: Nov 13.</div><div id="ckr"></div><label style="margin-top:10px">What worked? What will I change before Nov 13?<textarea id="ckn"></textarea></label></div>
 <div class="card"><h3>Weekly review · last 7 days</h3><div id="wrev"></div><label style="margin-top:10px">One thing I'll do better next week<textarea id="focus"></textarea></label></div>
 <div class="card"><h3>All habits</h3><div id="slist"></div></div>
 </div>
@@ -295,6 +302,18 @@ svg.sc *{transform-box:fill-box}
 </div></div>
 <div id="scr" hidden><div class="pg"><h1>My Why</h1><div class="orn">❦ ✦ ❦</div><div id="scrb"></div><div class="orn" style="margin-top:14px">✦ ✦ ✦</div><div class="sig">— Kushagra</div><div class="dt" id="scrd"></div><div class="seal">K</div></div>
 <div class="row" style="max-width:480px;margin:14px auto 0"><button id="scre" class="gb">Edit</button><button id="scrx" class="gb">Close</button></div></div>
+<div id="zov" hidden><div class="sosin">
+<h2 style="margin:0 0 4px">Zazen 🧘</h2>
+<div class="hint">Sit upright. Follow the circle with your breath. When the mind wanders, gently come back. Never force or hold your breath.</div>
+<div class="row" id="mtm" style="margin-top:10px"><button data-m="5" class="mini">5 min</button><button data-m="10" class="mini sel">10 min</button><button data-m="20" class="mini">20 min</button><button data-m="30" class="mini">30 min</button></div>
+<div class="row"><input type="number" id="mcus" inputmode="numeric" min="1" max="120" placeholder="Custom minutes" style="margin-top:0"></div>
+<div class="row" id="mpace"><button data-p="4,6" class="mini sel">In 4 · Out 6</button><button data-p="5,5" class="mini">5 · 5</button><button data-p="5,7" class="mini">5 · 7</button></div>
+<div style="height:250px;display:grid;place-items:center"><div id="mcirc" style="width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accbg),var(--acc));opacity:.85;transform:scale(.8)"></div></div>
+<div id="mlab" class="big" style="font-size:22px;text-align:center">Ready when you are</div><div id="mtime" class="hint" style="text-align:center">10:00 · 0 cycles</div>
+<div class="row"><button id="mgo" class="mini" style="background:var(--acc);color:var(--card);font-weight:700;border-color:var(--acc)">Begin</button><button id="zclose" class="mini">Close</button></div>
+<div class="hint" id="mtot" style="margin-top:8px;text-align:center"></div>
+</div></div>
+<div id="fcm" hidden><div class="fcw"><div id="fcc"></div><div class="row"><button id="fcn" class="gb">Next card</button><button id="fcx" class="gb">Close</button></div></div></div>
 <div id="pop"></div>
 <script>
 (function(){
@@ -302,17 +321,19 @@ var KEY="ritual-v1",START=new Date(2026,9,21),END=new Date(2027,9,21);
 var CHECKS=[
  ["clean","Stayed strong 💪",""],
  ["work","Worked out (lifting)",""],
- ["cardio","Did cardio",""],
+ ["cardio","Walk / cardio (as the knee allows)",""],
  ["junk","No junk food",""],
  ["read","Read today",""],
  ["wrote","Wrote today",""],
  ["phone","Phone out of bed by 11:30 PM–12 AM","Charge it away from the bed"],
- ["med","Meditation / breathing 🧘",""]
+ ["med","Zazen / meditation 🧘",""],
+ ["knee","Knee rehab / mobility 🦵","As your physio advises"],
+ ["job","Job-hunt action 💼","Apply, prep, network or learn"]
 ];
 var data={},NNK=["med","read","clean"];
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
-if(data._anchorV!==2){data._anchor="2026-10-21";data._anchorV=2;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
-var ap=data._anchor.split("-");START=new Date(+ap[0],+ap[1]-1,+ap[2]);END=new Date(+ap[0]+1,+ap[1]-1,+ap[2]);
+if(data._anchorV!==3){data._anchor="2026-10-26";data._anchorV=3;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+var ap=data._anchor.split("-");START=new Date(+ap[0],+ap[1]-1,+ap[2]);END=new Date(2027,10,13);var MAIN=new Date(2026,10,13);
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function pad(n){return n<10?"0"+n:""+n}
 function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
@@ -351,7 +372,7 @@ function render(){
   $("checks").innerHTML=h;
   document.querySelectorAll("[data-k]").forEach(function(el){el.value=r[el.dataset.k]==null?"":r[el.dataset.k]});
   document.querySelectorAll("[data-g]").forEach(function(el){el.value=(data._goals||{})[el.dataset.g]||""});
-  calc();cal();wchart();renderWhy();renderGoals();
+  calc();cal();wchart();renderWhy();renderGoals();missionRender();zenRender();
 }
 function calc(){
   var r=data[key(cur)]||{},p=+r.p||0,c=+r.c||0,f=+r.f||0;
@@ -576,7 +597,7 @@ $("cow").onclick=talk;$("talk").onclick=talk;
 $("help").onclick=function(){say("I'm right here. Let's ride this out together. 🫶");openSos()};
 $("vox").onclick=function(){vox=(vox+1)%3;this.textContent=["🔇","🐮","🔊"][vox];if(vox)say(vox===1?"Moo! Cute cow sounds are on 🐮":"Hello! I have a real voice now 🌼")};
 var MS=[3,5,7,10,14,21,30,45,60,90,100,150,200,365],
-CL={clean:"Clean-day",work:"Workout",cardio:"Cardio",junk:"Clean-eating",read:"Reading",wrote:"Writing",phone:"Early-phone",med:"Meditation"},
+CL={clean:"Clean-day",work:"Workout",cardio:"Cardio",junk:"Clean-eating",read:"Reading",wrote:"Writing",phone:"Early-phone",med:"Zazen",knee:"Knee-rehab",job:"Job-hunt"},
 CM={clean:["Your brain is rewiring. Keep going!","Stronger every single day 💪","Urges lose their power when you ignore them.","This is who you are becoming."],other:["Consistency beats intensity.","Look at you go! 🌟","Habits are building the new you.","Small wins, big future."]};
 function runs(f){var n=Math.min(TOT,Math.max(1,Math.round((now-START)/864e5)+1)),a=[],p=0,i,t,d;
   for(i=0;i<n;i++){d=addDays(START,i);t=f==="nn"?NNK.every(function(k){return(data[key(d)]||{})[k]}):(data[key(d)]||{})[f];p=t?p+1:(i===n-1&&d.getTime()===now.getTime()?p:0);a.push(p)}return a}
@@ -597,12 +618,12 @@ function renderWhy(){
   $("whyt").innerHTML=L.map(function(t,i){return'<p class="'+(i===L.length-1?"wl":"")+'">'+esc(t)+'</p>'}).join("")+(f?'<div class="wf">This week\'s focus: '+esc(f)+'</div>':"");
 }
 function wreview(){
-  var n=Math.max(1,Math.min(7,Math.round((now-START)/864e5)+1)),i,r,kc=0,kn=0,pc=0,pn=0,sl=0,sn=0,hrs=0,sos=0,ticks=0,cnt={},wts=[];
+  var n=Math.max(1,Math.min(7,Math.round((now-START)/864e5)+1)),i,r,kc=0,kn=0,pc=0,pn=0,sl=0,sn=0,hrs=0,sos=0,ticks=0,cnt={},wts=[],md=0,mn2=0,en=0,en2=0,ws=[];
   CHECKS.forEach(function(c){cnt[c[0]]=0});
   for(i=0;i<n;i++){r=data[key(addDays(now,-i))]||{};
     CHECKS.forEach(function(c){if(r[c[0]]){cnt[c[0]]++;ticks++}});
     if(+r.cal){kc+=+r.cal;kn++}if(+r.p){pc+=+r.p;pn++}if(+r.sleep){sl+=+r.sleep;sn++}
-    hrs+=(+r.hwork||0)+(+r.hlearn||0);sos+=(+r.sos||0);if(+r.wt)wts.push(+r.wt)}
+    hrs+=(+r.hwork||0)+(+r.hlearn||0);sos+=(+r.sos||0);if(+r.wt)wts.push(+r.wt);if(+r.mood){md+=+r.mood;mn2++}if(+r.energy){en+=+r.energy;en2++}if(+r.waist)ws.push(+r.waist)}
   var best=CHECKS[0],weak=CHECKS[0];CHECKS.forEach(function(c){if(cnt[c[0]]>cnt[best[0]])best=c;if(cnt[c[0]]<cnt[weak[0]])weak=c});
   var g=data._goals||{},row=function(a,b){return'<div class="rv"><span>'+a+'</span><span>'+b+'</span></div>'};
   var wc=wts.length>1?(wts[0]-wts[wts.length-1]):null;
@@ -617,7 +638,11 @@ function wreview(){
    +row("Urges survived",sos)
    +row("Weight change",wc==null?"–":(wc>0?"+":"")+wc.toFixed(1)+" kg")
    +row("Strongest habit",best[1])
-   +row("Needs attention",weak[1]);
+   +row("Needs attention",weak[1])
+   +row("Avg mood",mn2?(md/mn2).toFixed(1)+" / 5":"–")
+   +row("Avg energy",en2?(en/en2).toFixed(1)+" / 5":"–")
+   +row("Waist change",ws.length>1?((ws[0]-ws[ws.length-1]>0?"+":"")+(ws[0]-ws[ws.length-1]).toFixed(1)+" in"):"–");
+  if(mn2&&md/mn2<=2.5)$("wrev").innerHTML+="<div class='hint' style='margin-top:8px'>Your mood has been low this week. That matters. Please consider talking to a doctor or a counselor. You don't have to carry this alone 💛</div>";
 }
 function openSos(){
   $("sos").hidden=false;document.body.style.overflow="hidden";sosEnd=Date.now()+12e5;
@@ -660,7 +685,7 @@ function streakRender(){
   var a=runs("clean"),c=a[a.length-1]||0,b=Math.max.apply(null,a.concat([0])),tot=0,i,d;
   for(i=0;i<a.length;i++)if((data[key(addDays(START,i))]||{}).clean)tot++;
   $("cs").textContent=c;$("cbest").textContent="Best: "+b+" days · Total clean days: "+tot+" · Urges survived: "+sosTotal();
-  $("whyi").value=data._why||"";$("focus").value=data._focus||"";wreview();
+  $("whyi").value=data._why||"";$("focus").value=data._focus||"";wreview();ckRender();
   var nx=MS.filter(function(m){return m>c})[0]||c+30;$("cnext").style.width=Math.min(100,c/nx*100)+"%";$("cnl").textContent=(nx-c)+" more day"+(nx-c===1?"":"s")+" to the "+nx+"-day milestone";
   var L=a.slice(-60),m=Math.max(5,b),X=function(k){return 30+(L.length>1?k/(L.length-1):0)*300},Y=function(v){return 105-v/m*85};
   var ln=L.map(function(v,k){return(k?"L":"M")+X(k).toFixed(1)+" "+Y(v).toFixed(1)}).join(" ");
@@ -675,49 +700,7 @@ function streakRender(){
   });
   $("slist").innerHTML=h;
 }
-function gb(){return data._gbest||(data._gbest={})}
-var bc=0;
-$("bcb").onclick=function(){bc++;if(bc>=10){bc=0;var g=gb();g.breath=(g.breath||0)+1;save();$("bcn").textContent="🎉";$("bcm").textContent="10 breaths done. Sessions completed: "+g.breath;setTimeout(function(){$("bcn").textContent="0"},1800)}else{$("bcn").textContent=bc;$("bcm").textContent=bc+" / 10 · breathe out slowly…"}};
-$("bcr").onclick=function(){bc=0;$("bcn").textContent="0";$("bcm").textContent="No problem. Start again from 1."};
-var sx,sw=0,drawing=false,lx=0,ly=0;
-function sandClear(){sx.fillStyle="#e7d3a1";sx.fillRect(0,0,sw,320);for(var i=0;i<900;i++){sx.fillStyle="rgba(120,90,40,"+(Math.random()*.15)+")";sx.fillRect(Math.random()*sw,Math.random()*320,1.5,1.5)}}
-function sandInit(){var c=$("sand"),w=c.clientWidth;if(!w||w===sw)return;sw=w;var d=window.devicePixelRatio||1;c.width=w*d;c.height=320*d;sx=c.getContext("2d");sx.setTransform(d,0,0,d,0,0);sandClear()}
-var rakeMode=false;
-function rake(x1,y1,x2,y2){sx.lineCap="round";sx.lineJoin="round";
-  var offs=rakeMode?[-10,0,10]:[0],a=Math.atan2(y2-y1,x2-x1)+Math.PI/2,ox=Math.cos(a),oy=Math.sin(a);
-  offs.forEach(function(o){var ax=x1+ox*o,ay=y1+oy*o,bx=x2+ox*o,by=y2+oy*o,k=rakeMode?.5:1;
-    [[0,0,"rgba(120,90,40,.28)",10*k],[0,0,"rgba(95,65,28,.38)",5*k],[3,3,"rgba(255,245,215,.5)",2]].forEach(function(l){
-      sx.beginPath();sx.moveTo(ax+l[0],ay+l[1]);sx.lineTo(bx+l[0],by+l[1]);sx.strokeStyle=l[2];sx.lineWidth=l[3];sx.stroke()})})}
-$("rkm").onclick=function(){rakeMode=!rakeMode;this.textContent="Brush: "+(rakeMode?"rake":"finger")};
-function sp(e){var r=$("sand").getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
-$("sand").addEventListener("pointerdown",function(e){if(!sx)return;drawing=true;var p=sp(e);lx=p[0];ly=p[1];try{this.setPointerCapture(e.pointerId)}catch(x){}});
-$("sand").addEventListener("pointermove",function(e){if(!drawing)return;var p=sp(e);if(Math.hypot(p[0]-lx,p[1]-ly)<4)return;rake(lx,ly,p[0],p[1]);lx=p[0];ly=p[1]});
-$("sand").addEventListener("pointerup",function(){drawing=false});$("sand").addEventListener("pointercancel",function(){drawing=false});
-$("smooth").onclick=function(){if(sx)sandClear()};
-$("stone").onclick=function(){if(!sx)return;var x=40+Math.random()*(sw-80),y=40+Math.random()*240,r=14+Math.random()*14,g=sx.createRadialGradient(x-r/3,y-r/3,2,x,y,r*1.2);g.addColorStop(0,"#b9b4aa");g.addColorStop(1,"#5d5a55");
-  sx.fillStyle="rgba(60,40,10,.3)";sx.beginPath();sx.ellipse(x+4,y+5,r*1.15,r*.8,0,0,7);sx.fill();sx.fillStyle=g;sx.beginPath();sx.ellipse(x,y,r*1.1,r*.8,0,0,7);sx.fill()};
-var st=0,sstreak=0,sT=3;
-function sKey(){return sT===3?"slow":"slow"+sT}
-function slowUpd(){$("sts").textContent="Streak "+sstreak+" · Best at "+sT+"s: "+(gb()[sKey()]||0);$("sth").textContent="Tap every "+sT+" seconds, as evenly as you can (give or take "+Math.max(.4,sT*.13).toFixed(1)+"s). Count in your head. Rushing breaks it."}
-function sReset(){st=0;sstreak=0;$("stm").textContent="Tap once to start";slowUpd()}
-$("stb").onclick=function(){var n=Date.now(),g=gb(),tol=Math.max(.4,sT*.13);
-  if(!st){st=n;$("stm").textContent="Started. Tap again in exactly "+sT+" seconds.";return}
-  var d=(n-st)/1000;st=n;
-  if(Math.abs(d-sT)<=tol){sstreak++;if(sstreak>(g[sKey()]||0)){g[sKey()]=sstreak;save()}$("stm").textContent=d.toFixed(2)+"s ✓ Steady rhythm"}
-  else{$("stm").textContent=d.toFixed(2)+"s · "+(d<sT?"Too fast, slow down 🐢":"A bit slow, no worries")+". Streak reset.";sstreak=0}
-  slowUpd()};
-$("str").onclick=sReset;
-$("stt").addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(!b)return;sT=+b.dataset.t;$("stc").value="";msel(this,b);sReset()});
-$("stc").addEventListener("input",function(){var v=+this.value;if(v>=1&&v<=60){sT=v;msel($("stt"),null);sReset()}});
-var seq=[],mpos=0,mbusy=false,FR=[262,330,392,494];
 function beep(f){var c=ac();if(!c)return;var t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.08,t+.02);g.gain.linearRampToValueAtTime(0,t+.3);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.32)}
-function mflash(i,ms){var b=$("mp").children[i];b.style.opacity=1;b.style.transform="scale(.96)";beep(FR[i]);setTimeout(function(){b.style.opacity="";b.style.transform=""},ms||320)}
-function mplay(){mbusy=true;mpos=0;$("mm").textContent="Watch…";seq.forEach(function(p,k){setTimeout(function(){mflash(p)},500+k*650)});setTimeout(function(){mbusy=false;$("mm").textContent="Your turn"},500+seq.length*650)}
-function mnext(){seq.push(Math.floor(Math.random()*4));$("ml").textContent="Level "+seq.length;mplay()}
-$("mp").addEventListener("click",function(e){var b=e.target.closest("[data-p]");if(!b||mbusy||!seq.length)return;var p=+b.dataset.p;mflash(p,200);
-  if(p!==seq[mpos]){var g=gb(),lv=seq.length-1;if(lv>(g.mem||0)){g.mem=lv;save()}$("mm").textContent="Missed it. You reached level "+lv+" · Best "+(g.mem||0)+". Tap Start to try again.";seq=[];return}
-  mpos++;if(mpos===seq.length){mbusy=true;$("mm").textContent="Nice ✓";setTimeout(mnext,800)}});
-$("mst").onclick=function(){seq=[];mnext()};
 var mMin=10,mInh=4,mExh=6,mRun=false,mT0=0,mRaf=0;
 function ease(t){return .5-.5*Math.cos(Math.PI*t)}
 function mTot(){var r=data[tk()]||{};$("mtot").textContent=r.mmin?"Meditated today: "+r.mmin+" min":""}
@@ -732,7 +715,7 @@ function mTick(){
   mRaf=requestAnimationFrame(mTick)
 }
 function mFinish(){
-  mRun=false;cancelAnimationFrame(mRaf);mIdle();$("mlab").textContent="Session complete 🙏";
+  mRun=false;cancelAnimationFrame(mRaf);mIdle();$("mlab").textContent="Session complete 🙏";$("zov").hidden=true;document.body.style.overflow="";
   var r=rec(tk());r.mmin=(+r.mmin||0)+mMin;r.med=true;save();render();mTot();
   beep(392);setTimeout(function(){beep(523)},350);try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
   var all=NNK.every(function(k){return r[k]});
@@ -747,22 +730,94 @@ $("mgo").onclick=function(){
   ac();mRun=true;mT0=Date.now();this.textContent="Stop";mTick();
 };
 mTot();
-document.querySelector(".gt").addEventListener("click",function(e){var b=e.target.closest("[data-g]");if(!b)return;
-  document.querySelectorAll(".gt button").forEach(function(x){x.className=x===b?"on":""});
-  document.querySelectorAll(".gp").forEach(function(x){x.hidden=x.id!=="g"+b.dataset.g});if(b.dataset.g==="1")sandInit()});
-slowUpd();
-var GOALS=["💼 Switch to a job paying more than ₹1 lakh per month","🔥 Reach 14% body fat, shredded","🏃 Heal my knees and run a half marathon"];
-function renderGoals(){var d=data._gdone||{};$("glist").innerHTML=GOALS.map(function(g,i){return'<button class="chk'+(d[i]?" on":"")+'" data-gi="'+i+'"><span class="box">✓</span><span>'+g+'</span></button>'}).join("")}
-$("glist").addEventListener("click",function(e){var b=e.target.closest("[data-gi]");if(!b)return;var d=data._gdone=data._gdone||{},i=b.dataset.gi;d[i]=!d[i];save();renderGoals();if(d[i])popup("🏆","Goal achieved!","Your hard work paid off","Take a moment to be proud of this.",true)});
+function renderGoals(){var d=data._gdone2||{};$("glist").innerHTML=GOALS.map(function(g,i){return'<button class="chk'+(d[i]?" on":"")+'" data-gi="'+i+'"><span class="box">✓</span><span>'+g+'</span></button>'}).join("")}
+$("glist").addEventListener("click",function(e){var b=e.target.closest("[data-gi]");if(!b)return;var d=data._gdone2=data._gdone2||{},i=b.dataset.gi;d[i]=!d[i];save();renderGoals();if(d[i])popup("🏆","Goal achieved!","Your hard work paid off","Take a moment to be proud of this.",true)});
+var GOALS=["💼 Land a new job paying 1.5–2× my current salary","🔥 Reach 13–14% body fat with visible abs","⚡ Be energetic and hungry: strong body, healed knee","🥾 Complete a 20+ km trek","🧘 Practice Zen: master my senses, find happiness within"];
+var ZEN=["Before enlightenment, chop wood, carry water. After enlightenment, chop wood, carry water.","When walking, walk. When eating, eat.","Fall seven times, stand up eight.","Move, and the way will open.","Let go, or be dragged.","No snowflake ever falls in the wrong place.","Sitting quietly, doing nothing, spring comes, and the grass grows by itself.","The obstacle is the path.","When you reach the top of the mountain, keep climbing.","A journey of a thousand miles begins with a single step.","Do not seek the truth. Only cease to cherish your opinions.","You can't stop the waves, but you can learn to surf.","The best way out is always through.","Each day is a new beginning. Walk on.","Nothing is permanent. This feeling will pass too."];
+function missionRender(){
+  var D=864e5,pre=Math.round((MAIN-START)/D),e6=new Date(MAIN.getFullYear(),MAIN.getMonth()+6,MAIN.getDate()),tot6=Math.round((e6-MAIN)/D),
+  fmt=function(d){return d.toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})},
+  P=[["Phase 1 · Foundation","Heal, sleep, rebuild energy. Daily knee rehab, protein-first meals, small walks, one job-hunt action a day."],["Phase 2 · Build","Strength training, steady fat loss, polish your CV and portfolio, apply every week."],["Phase 3 · Sharpen","Interviews and negotiation, longer walks and hikes, fine-tune your food."],["Phase 4 · Summit","Final push: land the offer, peak form, the 20+ km trek."]],t,f,p,x,n,d,ph,tY;
+  if(now<MAIN){
+    n=Math.min(pre,Math.max(1,Math.round((now-START)/D)+1));
+    t="Prep run · Day "+n+" of "+pre;
+    f="A practice run. Log everything honestly, set up your environment (blockers, sleep, meals), start gentle walks and knee rehab with your physio, begin job prep, and notice what's hard. No pressure to be perfect.";
+    p=n/pre;x=Math.max(0,Math.round((MAIN-now)/D))+" days to the "+fmt(MAIN)+" checkpoint";
+  }else{
+    d=Math.round((now-MAIN)/D)+1;
+    if(d<=tot6){ph=d<=30?0:d<=90?1:d<=150?2:3;t=P[ph][0]+" · Day "+d+" of "+tot6;f=P[ph][1];p=d/tot6;x=(tot6-d)+" days to the 6-month mark, "+fmt(e6)}
+    else{tY=Math.round((END-MAIN)/D);t="Year of growth · Day "+d+" of "+tY;f="Keep compounding. Hold your standards, keep your streaks and aim higher every month.";p=Math.min(1,d/tY);x=Math.max(0,tY-d)+" days to your birthday, "+fmt(END)}
+    if(d<=3)x+=" · Checkpoint review is on the Streaks tab";
+  }
+  $("mph").textContent=t;$("mfo").textContent=f;$("mbar").style.width=(p*100)+"%";$("mtxt").textContent=x;
+}
+function zenRender(){var n=Math.max(0,Math.round((now-START)/864e5));$("zen").textContent="“"+ZEN[n%ZEN.length]+"”"}
+$("zb").onclick=function(){$("zov").hidden=false;document.body.style.overflow="hidden";$("mlab").textContent="Ready when you are";mTot()};
+$("zclose").onclick=function(){if(mRun){mRun=false;cancelAnimationFrame(mRaf);mIdle()}$("zov").hidden=true;document.body.style.overflow=""};
+var BOOKS=[["The 48 Laws of Power", "Robert Greene"], ["How to Win Friends and Influence People", "Dale Carnegie"], ["Grinding It Out", "Ray Kroc"], ["The Autobiography of Benjamin Franklin", "Benjamin Franklin"], ["Zero to One", "Peter Thiel"], ["Zen Mind, Beginner's Mind", "Shunryu Suzuki"], ["Shoe Dog", "Phil Knight"], ["The Almanack of Naval Ravikant", "Eric Jorgenson"], ["Steve Jobs", "Walter Isaacson"], ["Total Recall", "Arnold Schwarzenegger"], ["Can't Hurt Me", "David Goggins"]];
+var FC=[[0, "Law 1 · Don't outshine the master", "Make the people above you feel brilliant and secure. Shine too brightly and you trigger their insecurity. Let them look good while you build your position quietly."], [0, "Law 4 · Say less", "The more you talk, the more you reveal and the less powerful you sound. Short, calm statements carry weight."], [0, "Law 5 · Reputation", "Your reputation arrives before you do. Build it on purpose and guard it, because it opens or closes every door."], [0, "Law 9 · Win through actions", "Arguments make people defensive. Show results instead and let the proof persuade."], [0, "Law 25 · Re-create yourself", "Don't accept the role others hand you. Shape your own identity and keep refining it like an artist."], [0, "Law 28 · Be bold", "Half-hearted action invites doubt and mistakes. Commit fully, because boldness makes errors look smaller."], [0, "Law 29 · Plan to the end", "Think through the whole path and its consequences before you move. Don't be led by the excitement of the first step."], [0, "Law 30 · Make it look effortless", "Don't show the sweat. Skill that looks easy impresses more than skill that looks strained."], [0, "Law 35 · Master timing", "Know when to wait and when to strike. Patience plus decisive action beats constant rushing."], [0, "Law 48 · Stay formless", "Stay flexible. A fixed pattern is easy to predict and attack, so adapt as conditions change."], [0, "How to read this book", "It's a cynical map of how power games work. Use it to spot manipulation and protect yourself, not as a license to manipulate."], [1, "Don't criticize", "Criticism makes people defensive and resentful, and it rarely changes anyone. Try to understand first."], [1, "Give honest appreciation", "Sincere, specific appreciation motivates far more than fault-finding. Flattery is fake, appreciation is real."], [1, "Be genuinely interested", "You make friends faster by being truly interested in other people than by trying to impress them."], [1, "Remember names", "A person's own name is the most meaningful word to them. Remember it and use it."], [1, "Listen more", "Encourage people to talk about themselves and really listen. Most people rarely feel heard."], [1, "Talk in their interests", "Speak about what the other person cares about. That's how you connect and persuade."], [1, "Avoid arguments", "Even when you win an argument, the other person feels beaten. Look for common ground instead."], [1, "Admit mistakes fast", "Own your errors quickly and openly. It disarms critics and earns respect."], [1, "Let them own the idea", "People support what they feel they helped create. Ask questions and let the idea become theirs."], [1, "See their side", "Honestly try to see the situation from the other person's point of view. It changes how you speak."], [1, "Praise every improvement", "Praise progress, even small progress. Give people a good reputation to live up to."], [2, "Persistence", "Kroc believed persistence beats talent, genius and education. Most people quit early, so staying in the game is the edge."], [2, "It's never too late", "Kroc was in his fifties when he began building McDonald's. Great chapters can start late."], [2, "Years of preparation", "He spent decades selling paper cups and milkshake mixers first. The slow years built his sales skill and industry knowledge."], [2, "Systems create consistency", "He insisted on strict standards for quality, service, cleanliness and value, so every location felt the same. Consistency builds trust at scale."], [2, "Win together", "He believed the company succeeds only when its franchise owners succeed. Build partnerships where others win too."], [2, "Control the foundation", "McDonald's gained power by controlling the real estate under its restaurants. Look for the asset underneath the business."], [2, "Act on conviction", "When Kroc saw the potential in the McDonald brothers' fast, simple system, he committed fully and moved quickly."], [3, "Virtue 1 · Temperance", "Eat not to dullness; drink not to elevation."], [3, "Virtue 2 · Silence", "Speak not but what may benefit others or yourself; avoid trifling conversation."], [3, "Virtue 3 · Order", "Let all your things have their places; let each part of your business have its time."], [3, "Virtue 4 · Resolution", "Resolve to perform what you ought; perform without fail what you resolve."], [3, "Virtue 5 · Frugality", "Make no expense but to do good to others or yourself; i.e., waste nothing."], [3, "Virtue 6 · Industry", "Lose no time; be always employ'd in something useful; cut off all unnecessary actions."], [3, "Virtue 7 · Sincerity", "Use no hurtful deceit; think innocently and justly, and, if you speak, speak accordingly."], [3, "Virtue 8 · Justice", "Wrong none by doing injuries, or omitting the benefits that are your duty."], [3, "Virtue 9 · Moderation", "Avoid extremes; forbear resenting injuries so much as you think they deserve."], [3, "Virtue 10 · Cleanliness", "Tolerate no uncleanliness in body, clothes, or habitation."], [3, "Virtue 11 · Tranquillity", "Be not disturbed at trifles, or at accidents common or unavoidable."], [3, "Virtue 12 · Chastity", "Rarely use venery but for health or offspring, never to dulness, weakness, or the injury of your own or another's peace or reputation."], [3, "Virtue 13 · Humility", "Imitate Jesus and Socrates."], [3, "The two daily questions", "Morning: \"What good shall I do this day?\" Evening: \"What good have I done to-day?\""], [3, "His scorecard method", "Franklin kept a small book and marked every fault under each virtue each evening. He focused on one virtue per week, finishing a thirteen-week course four times a year."], [3, "The speckled axe", "A man wanted his whole axe polished bright, grew tired of turning the wheel, and settled for a speckled one. Franklin admitted he never reached perfection but became a better, happier man for trying."], [3, "Little advantages", "\"Human felicity is produc'd not so much by great pieces of good fortune that seldom happen, as by little advantages that occur every day.\""], [3, "The Junto", "He gathered friends into a weekly club for mutual improvement, discussing morals, ideas and projects. Surround yourself with people who sharpen you."], [3, "The daily study hour", "Franklin set aside an hour or two each day for study after work. Small daily reading beat big plans."], [4, "Vertical vs horizontal progress", "Going from 0 to 1 means creating something new. Going from 1 to n just copies what already works. Real breakthroughs are vertical."], [4, "Competition is for losers", "Thiel argues competition erodes profit. Build something so unique that you're in a category of your own."], [4, "Have a secret", "Great companies rest on a truth most people haven't seen yet. Ask yourself what important truth few people agree with you on."], [4, "Start small", "Dominate a tiny market first, then expand. It's easier to lead a small pond than to fight in an ocean."], [4, "The power law", "A few decisions or ventures dwarf all the rest. Find your highest-leverage bet and go deep instead of spreading thin."], [4, "Distribution matters", "A great product doesn't sell itself. Sales and distribution matter as much as the invention."], [4, "Definite optimism", "Have a concrete plan for the future and work to make it happen, rather than treating the future as luck."], [4, "Be the last mover", "Don't aim to be first. Aim to be the one whose position stays durable for years."], [5, "Beginner's mind", "Keep an open, curious mind. The expert's mind believes it knows; the beginner's mind sees possibilities."], [5, "Posture is the practice", "In zazen, sit upright with a steady spine. Posture and breath are the practice. You aren't trying to get anywhere."], [5, "Counting the breath", "Follow your breath by counting or feeling it. When the mind wanders, return gently without judging yourself."], [5, "Mind waves", "Thoughts rise like waves. Don't fight them or follow them. Let them rise and settle."], [5, "Practice without gain", "Don't practice to get something. Chasing results tangles the mind. Just sit and keep going."], [5, "Do one thing completely", "Do whatever you are doing wholeheartedly, leaving no leftovers, like a fire burning cleanly. Then let it go."], [5, "Everyday mind", "Zen isn't about special states. It lives in ordinary things: eating, walking, sitting."], [5, "Return, again and again", "Your mind will wander many times. Coming back is the practice, not a failure."], [5, "Two truths", "Suzuki is often credited with a lovely paradox: you're fine as you are, and you can still grow."], [6, "A crazy starting idea", "Knight began with a college paper asking if Japanese running shoes could do to German shoes what Japanese cameras had done. Big companies can begin as class assignments."], [6, "Hustle early", "He started by selling imported shoes out of his car at track meets. Early hustle matters more than polish."], [6, "Pair vision with a craftsman", "Coach Bill Bowerman was obsessed with better running shoes and even experimented with a waffle iron. Pair a dreamer with a maker."], [6, "Cash is oxygen", "Rapid growth kept pushing the company to the edge of running out of money. Treat cash flow as seriously as the product."], [6, "Hire believers", "His early team was an odd mix of runners and misfits who cared deeply. Passion beats polish when you're starting."], [6, "Don't stop", "The business nearly died many times. It survived by refusing to quit while problems were solved one at a time."], [6, "Mission over money", "The team believed in the shoes and in running, which carried them through years of financial stress."], [6, "Credit luck and people", "Knight stresses luck, timing and the loyalty of others. Stay humble and share the credit."], [7, "Seek wealth, not just money", "Wealth is assets that earn while you sleep, not hours traded for pay. Build things that work without you."], [7, "Specific knowledge", "Build skills that can't be easily taught or outsourced, found through curiosity and obsession. That's your edge."], [7, "Use leverage", "Multiply your output with people, money, and 'permissionless' leverage like code and media."], [7, "Own your work", "Put your own name on what you build and take real ownership. Equity, not just salary, creates wealth."], [7, "Long-term games", "Play long-term games with long-term people. Trust and compounding beat quick wins."], [7, "Judgment", "Good judgment from experience and clear thinking is worth more than raw hours."], [7, "Read a lot", "Read what you love until you love to read. Reading is the path to understanding most things."], [7, "Want less", "Naval links peace to wanting less. Every desire is a small contract with unhappiness until it's fulfilled, so choose desires carefully."], [7, "Build and sell", "If you can both build and sell, you're hard to stop. Pair craft with communication."], [7, "Productize yourself", "Package what only you can do, with your own name and style, then scale it with leverage."], [8, "Focus means saying no", "When Jobs returned to Apple he cut the product line down to a few great products. Focus is refusing good ideas."], [8, "Simplicity", "He pushed for clean design, removing steps and buttons until the product felt obvious."], [8, "Care about the unseen", "His father taught him to finish even the hidden back of a cabinet. Craft matters when no one is looking."], [8, "Humanities and technology", "He believed great products sit where technology meets the liberal arts."], [8, "Integrate end to end", "Apple controlled hardware, software and experience together so the product felt seamless."], [8, "High standards", "Jobs rejected mediocre work and demanded the best. The book also shows his harshness, so copy the standards, not the cruelty."], [8, "Reality distortion", "His intense belief pushed people to attempt what seemed impossible. Strong conviction can stretch what a team believes it can do."], [8, "Setbacks", "Being forced out of Apple became a turning point. He came back sharper and more focused."], [9, "See it first", "Arnold pictured his goals vividly, champion first and then movie star, and worked backward from them. Vision gives effort direction."], [9, "Outwork everyone", "He trained relentlessly, twice a day when needed, and treated effort as the one thing fully in his control."], [9, "Ignore the doubters", "People said his accent and physique would limit him in film. He treated doubt as fuel."], [9, "Learn the business", "Beyond bodybuilding he studied business, started side ventures like mail order, and built a financial base."], [9, "Keep learning", "He kept taking classes, from English to business, never assuming talent alone was enough."], [9, "Surround yourself with winners", "He trained alongside other top athletes and learned from them. Good company raises the bar."], [9, "Give back", "Later he put time and money into youth programs and the Special Olympics. Success feels complete when shared."], [10, "The accountability mirror", "Stand in front of a mirror and honestly list what you need to fix and what you will do. Face the truth without excuses."], [10, "The 40% rule", "When your mind says you're done, you may only be about 40% done. Push past the first wave of wanting to quit."], [10, "The cookie jar", "Keep a mental jar of your past victories. Pull one out when things get hard."], [10, "Callous your mind", "Do hard things voluntarily every day so discomfort stops running your decisions."], [10, "Own your story", "Blame doesn't change the past. Take ownership and start from where you are."], [10, "Do something that sucks", "Choose one uncomfortable task each day and do it on purpose."], [10, "Small steps, huge goals", "Break an enormous goal into daily tasks and chase them relentlessly. Preparation beats talk."]];
+function fcState(){return data._fc||(data._fc={seen:{},fav:{}})}
+function allIdx(){return FC.map(function(c,i){return i})}
+function fcPick(pool){var st=fcState(),un=pool.filter(function(i){return!st.seen[i]});if(!un.length){pool.forEach(function(i){delete st.seen[i]});un=pool.slice()}return un[Math.floor(Math.random()*un.length)]}
+function fcHtml(i,flip){var c=FC[i],b=BOOKS[c[0]];return'<div class="fcb">'+esc(b[0])+' · '+esc(b[1])+'</div>'+(flip?'<div class="fct2">'+esc(c[2])+'</div>':'<div class="fct">'+esc(c[1])+'</div><div class="hint">Tap to reveal</div>')}
+var pi=0,pflip=false;
+function fcShow(i){pi=i;pflip=false;fcState().seen[i]=1;save();$("fcc").innerHTML=fcHtml(i,false);$("fcm").hidden=false}
+$("fcc").onclick=function(){pflip=!pflip;this.innerHTML=fcHtml(pi,pflip)};
+$("fcn").onclick=function(){fcShow(fcPick(allIdx()))};
+$("fcx").onclick=function(){$("fcm").hidden=true};
+var rf="all",ri=-1,rflip=false,rh=[];
+function rPool(){return allIdx().filter(function(i){return rf==="all"||(rf==="fav"?fcState().fav[i]:FC[i][0]===+rf)})}
+function rPaint(){
+  $("rcard").innerHTML=fcHtml(ri,rflip);$("rfav").textContent=fcState().fav[ri]?"⭐":"☆";
+  $("rstat").textContent=Object.keys(fcState().seen).length+" of "+FC.length+" cards seen";
+}
+function rNext(){var p=rPool();if(!p.length){ri=-1;$("rcard").innerHTML='<div class="hint">No cards here yet. Tap ☆ on a card to save it.</div>';return}
+  if(ri>=0)rh.push(ri);ri=fcPick(p);rflip=false;fcState().seen[ri]=1;save();rPaint()}
+function rRender(){
+  var sel=$("rsel");
+  if(!sel.options.length)sel.innerHTML='<option value="all">All books</option><option value="fav">⭐ Favorites</option>'+BOOKS.map(function(b,i){return'<option value="'+i+'">'+esc(b[0])+'</option>'}).join("");
+  if(ri<0)rNext();else rPaint();
+  $("rbooks").innerHTML=BOOKS.map(function(b,i){var n=FC.filter(function(c){return c[0]===i}).length;return'<div class="rv" data-b="'+i+'" style="cursor:pointer"><span>'+esc(b[0])+'</span><span>'+n+' cards</span></div>'}).join("");
+}
+$("rcard").onclick=function(){if(ri<0)return;rflip=!rflip;rPaint()};
+$("rnext").onclick=rNext;
+$("rprev").onclick=function(){if(rh.length){ri=rh.pop();rflip=false;rPaint()}};
+$("rfav").onclick=function(){if(ri<0)return;var f=fcState().fav;f[ri]=!f[ri];if(!f[ri])delete f[ri];save();rPaint()};
+$("rsel").onchange=function(){rf=this.value;ri=-1;rh=[];rNext()};
+$("rbooks").onclick=function(e){var b=e.target.closest("[data-b]");if(!b)return;rf=b.dataset.b;$("rsel").value=rf;ri=-1;rh=[];rNext();window.scrollTo(0,0)};
+function ckRender(){
+  var D=864e5,np=Math.round((MAIN-START)/D),last=Math.min(np,Math.max(0,Math.round((now-START)/D)+1)),i,k,r,
+  logged=0,nn=0,cl=0,wk=0,wl=0,kn=0,jb=0,zz=0,rd=0,md=0,mn=0,en=0,ne=0,hrs=0,mm=0,sos=0,kc=0,kcn=0,pc=0,pcn=0,w1=null,w2=null,x1=null,x2=null,best=0,run=0,
+  row=function(a,b){return'<div class="rv"><span>'+a+'</span><span>'+b+'</span></div>'};
+  if(!last){$("ckr").innerHTML='<div class="hint">Your prep run starts on '+START.toLocaleDateString(undefined,{day:"numeric",month:"long"})+'. Come back after a few days.</div>';$("ckn").value=data._ck||"";return}
+  for(i=0;i<last;i++){k=key(addDays(START,i));r=data[k]||{};
+    if(score(k)>0||+r.cal||+r.wt)logged++;
+    if(NNK.every(function(q){return r[q]}))nn++;
+    if(r.clean){cl++;run++;if(run>best)best=run}else run=0;
+    if(r.work)wk++;if(r.cardio)wl++;if(r.knee)kn++;if(r.job)jb++;if(r.med)zz++;if(r.read)rd++;
+    if(+r.mood){md+=+r.mood;mn++}if(+r.energy){en+=+r.energy;ne++}
+    hrs+=(+r.hwork||0)+(+r.hlearn||0);mm+=+r.mmin||0;sos+=+r.sos||0;
+    if(+r.cal){kc+=+r.cal;kcn++}if(+r.p){pc+=+r.p;pcn++}
+    if(+r.wt){if(w1===null)w1=+r.wt;w2=+r.wt}if(+r.waist){if(x1===null)x1=+r.waist;x2=+r.waist}}
+  var df=function(a,b,u){var c=b-a;return a+" → "+b+" "+u+" ("+(c>0?"+":"")+c.toFixed(1)+")"};
+  $("ckr").innerHTML=row("Days covered",last+" of "+np)+row("Days with logs",logged)+row("All 3 non-negotiables",nn+" days")
+   +row("Stayed strong · best run",cl+" days · "+best)+row("Workouts · walks",wk+" · "+wl)+row("Knee rehab days",kn)+row("Job-hunt actions",jb)
+   +row("Zazen days · minutes",zz+" · "+Math.round(mm))+row("Reading days",rd)+row("Hours invested",(Math.round(hrs*10)/10)+" h")+row("Urges survived",sos)
+   +row("Avg mood · energy",(mn?(md/mn).toFixed(1):"–")+" · "+(ne?(en/ne).toFixed(1):"–"))
+   +row("Avg calories · protein",(kcn?Math.round(kc/kcn):"–")+" · "+(pcn?Math.round(pc/pcn)+" g":"–"))
+   +row("Weight",w1===null?"–":df(w1,w2,"kg"))+row("Waist",x1===null?"–":df(x1,x2,"in"));
+  $("ckn").value=data._ck||"";
+}
+$("ckn").addEventListener("input",function(){data._ck=this.value;save()});
 function tab(n){
-  $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;$("pgG").hidden=n!==3;
-  $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";$("tabG").className=n===3?"on":"";
+  $("pgT").hidden=n!==0;$("pgC").hidden=n!==1;$("pgS").hidden=n!==2;$("pgR").hidden=n!==3;
+  $("tabT").className=n===0?"on":"";$("tabC").className=n===1?"on":"";$("tabS").className=n===2?"on":"";$("tabR").className=n===3?"on":"";
   if(n===1){cowRender();setTimeout(function(){var st=cowState();say(st.night?pick(GRUMPY):st.asleep?"Zzz… tap me to wake me up 🐮💤":greet())},400)}
   if(n===2)streakRender();
-  if(n===3)sandInit();
+  if(n===3)rRender();
   window.scrollTo(0,0);
 }
-$("tabT").onclick=function(){tab(0)};$("tabC").onclick=function(){tab(1)};$("tabS").onclick=function(){tab(2)};$("tabG").onclick=function(){tab(3)};
+$("tabT").onclick=function(){tab(0)};$("tabC").onclick=function(){tab(1)};$("tabS").onclick=function(){tab(2)};$("tabR").onclick=function(){tab(3)};
 var WX="part",wtxt="manual · tap to change",MODES=["sun","part","cloud","rain","storm","snow","fog"],
 LBL={sun:"Sunny",part:"Partly cloudy",cloud:"Cloudy",rain:"Rain",storm:"Thunderstorm",snow:"Snow",fog:"Fog"},
 EM={sun:"☀️",part:"🌤",cloud:"☁️",rain:"🌧",storm:"⛈",snow:"❄️",fog:"🌫"},
@@ -785,6 +840,7 @@ function wxLive(){try{fetch("https://api.open-meteo.com/v1/forecast?latitude=46.
 $("wxb").onclick=function(){WX=MODES[(MODES.indexOf(WX)+1)%MODES.length];wtxt="manual";wxApply();if(!cowState().night)say(WXMSG[WX])};
 wxApply();wxLive();
 render();
+setTimeout(function(){fcShow(fcPick(allIdx()))},900);
 })();
 try{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js")}catch(e){}
 </script>
