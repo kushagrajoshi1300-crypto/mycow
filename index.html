@@ -154,7 +154,7 @@ svg.sc *{transform-box:fill-box}
   <div class="bar"><i id="prog"></i></div>
   <div id="mis" class="card"><h3>🎯 6-month mission</h3><div id="mph" style="font-weight:700;font-size:17px"></div><div class="hint" id="mfo" style="margin:2px 0 8px"></div>
 <div class="bar" style="margin:0"><i id="mbar"></i></div><div class="hint" id="mtxt"></div>
-<div class="hint" style="margin-top:4px">Prep run: Oct 26 – Nov 12 · Main year: Nov 13, 2026 – Nov 13, 2027</div>
+<div class="hint" style="margin-top:4px">Your year: Nov 13, 2026 – Nov 13, 2027</div>
 <div class="hint" style="margin-top:6px">Knee first: get a physiotherapist or orthopedic doctor's guidance before long walks, runs and the trek.</div></div>
 <div id="goals" class="card"><h3>My goals</h3><div id="glist"></div></div>
 <div id="zen" class="zen"></div>
@@ -311,7 +311,6 @@ svg.sc *{transform-box:fill-box}
 <div class="bar" style="margin:10px 0 4px"><i id="cnext"></i></div><div class="hint" id="cnl"></div>
 <svg id="cch" viewBox="0 0 340 130" style="width:100%;height:auto;margin-top:8px"></svg>
 <div class="hint">The line shows your streak length each day (last 60 days). If it ever drops to zero, note the trigger and start climbing again.</div></div>
-<div class="card"><h3>📋 Prep run report · Oct 26 – Nov 12</h3><div class="hint" style="margin:0 0 6px">Your practice run. Checkpoint: Nov 13.</div><div id="ckr"></div><label style="margin-top:10px">What worked? What will I change before Nov 13?<textarea id="ckn"></textarea></label></div>
 <div class="card"><h3>Weekly review · last 7 days</h3><div id="wrev"></div><label style="margin-top:10px">One thing I'll do better next week<textarea id="focus"></textarea></label></div>
 <div class="card"><h3>All habits</h3><div id="slist"></div></div>
 </div>
@@ -372,7 +371,7 @@ var CHECKS=[
 ];
 var data={},NNK=["med","read","clean","walk10"];
 try{data=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){data={}}
-if(data._anchorV!==3){data._anchor="2026-10-26";data._anchorV=3;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+if(data._anchorV!==4){data._anchor="2026-11-13";data._anchorV=4;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 var ap=data._anchor.split("-");START=new Date(+ap[0],+ap[1]-1,+ap[2]);END=new Date(2027,10,13);var MAIN=new Date(2026,10,13);
 function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
 function pad(n){return n<10?"0"+n:""+n}
@@ -753,7 +752,7 @@ function streakRender(){
   var a=runs("clean"),c=a[a.length-1]||0,b=Math.max.apply(null,a.concat([0])),tot=0,i,d;
   for(i=0;i<a.length;i++)if((data[key(addDays(START,i))]||{}).clean)tot++;
   $("cs").textContent=c;$("cbest").textContent="Best: "+b+" days · Total clean days: "+tot+" · Urges survived: "+sosTotal();
-  $("whyi").value=data._why||"";$("focus").value=data._focus||"";wreview();ckRender();
+  $("whyi").value=data._why||"";$("focus").value=data._focus||"";wreview();
   var nx=MS.filter(function(m){return m>c})[0]||c+30;$("cnext").style.width=Math.min(100,c/nx*100)+"%";$("cnl").textContent=(nx-c)+" more day"+(nx-c===1?"":"s")+" to the "+nx+"-day milestone";
   var L=a.slice(-60),m=Math.max(5,b),X=function(k){return 30+(L.length>1?k/(L.length-1):0)*300},Y=function(v){return 105-v/m*85};
   var ln=L.map(function(v,k){return(k?"L":"M")+X(k).toFixed(1)+" "+Y(v).toFixed(1)}).join(" ");
@@ -807,15 +806,13 @@ function missionRender(){
   fmt=function(d){return d.toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"})},
   P=[["Phase 1 · Foundation","Heal, sleep, rebuild energy. Daily knee rehab, protein-first meals, small walks, one job-hunt action a day."],["Phase 2 · Build","Strength training, steady fat loss, polish your CV and portfolio, apply every week."],["Phase 3 · Sharpen","Interviews and negotiation, longer walks and hikes, fine-tune your food."],["Phase 4 · Summit","Final push: land the offer, peak form, the 20+ km trek."]],t,f,p,x,n,d,ph,tY;
   if(now<MAIN){
-    n=Math.min(pre,Math.max(1,Math.round((now-START)/D)+1));
-    t="Prep run · Day "+n+" of "+pre;
-    f="A practice run. Log everything honestly, set up your environment (blockers, sleep, meals), start gentle walks and knee rehab with your physio, begin job prep, and notice what's hard. No pressure to be perfect.";
-    p=n/pre;x=Math.max(0,Math.round((MAIN-now)/D))+" days to the "+fmt(MAIN)+" checkpoint";
+    t="Starts "+fmt(MAIN);
+    f="Day 1 begins on your birthday. Get ready: set your goals, your why and your meals, and clear your space.";
+    p=0;x=Math.max(0,Math.round((MAIN-now)/D))+" days to go";
   }else{
     d=Math.round((now-MAIN)/D)+1;
     if(d<=tot6){ph=d<=30?0:d<=90?1:d<=150?2:3;t=P[ph][0]+" · Day "+d+" of "+tot6;f=P[ph][1];p=d/tot6;x=(tot6-d)+" days to the 6-month mark, "+fmt(e6)}
     else{tY=Math.round((END-MAIN)/D);t="Year of growth · Day "+d+" of "+tY;f="Keep compounding. Hold your standards, keep your streaks and aim higher every month.";p=Math.min(1,d/tY);x=Math.max(0,tY-d)+" days to your birthday, "+fmt(END)}
-    if(d<=3)x+=" · Checkpoint review is on the Streaks tab";
   }
   $("mph").textContent=t;$("mfo").textContent=f;$("mbar").style.width=(p*100)+"%";$("mtxt").textContent=x;
 }
@@ -853,30 +850,6 @@ $("rprev").onclick=function(){if(rh.length){ri=rh.pop();rflip=false;rPaint()}};
 $("rfav").onclick=function(){if(ri<0)return;var f=fcState().fav;f[ri]=!f[ri];if(!f[ri])delete f[ri];save();rPaint()};
 $("rsel").onchange=function(){rf=this.value;ri=-1;rh=[];rNext()};
 $("rbooks").onclick=function(e){var b=e.target.closest("[data-b]");if(!b)return;rf=b.dataset.b;$("rsel").value=rf;ri=-1;rh=[];rNext();window.scrollTo(0,0)};
-function ckRender(){
-  var D=864e5,np=Math.round((MAIN-START)/D),last=Math.min(np,Math.max(0,Math.round((now-START)/D)+1)),i,k,r,
-  logged=0,nn=0,cl=0,wk=0,wl=0,kn=0,jb=0,zz=0,rd=0,md=0,mn=0,en=0,ne=0,hrs=0,mm=0,sos=0,kc=0,kcn=0,pc=0,pcn=0,w1=null,w2=null,x1=null,x2=null,best=0,run=0,
-  row=function(a,b){return'<div class="rv"><span>'+a+'</span><span>'+b+'</span></div>'};
-  if(!last){$("ckr").innerHTML='<div class="hint">Your prep run starts on '+START.toLocaleDateString(undefined,{day:"numeric",month:"long"})+'. Come back after a few days.</div>';$("ckn").value=data._ck||"";return}
-  for(i=0;i<last;i++){k=key(addDays(START,i));r=data[k]||{};
-    if(score(k)>0||+r.cal||+r.wt)logged++;
-    if(NNK.every(function(q){return r[q]}))nn++;
-    if(r.clean){cl++;run++;if(run>best)best=run}else run=0;
-    if(r.work)wk++;if(r.cardio)wl++;if(r.knee)kn++;if(r.job)jb++;if(r.med)zz++;if(r.read)rd++;
-    if(+r.mood){md+=+r.mood;mn++}if(+r.energy){en+=+r.energy;ne++}
-    hrs+=(+r.hwork||0)+(+r.hlearn||0);mm+=+r.mmin||0;sos+=+r.sos||0;
-    if(+r.cal){kc+=+r.cal;kcn++}if(+r.p){pc+=+r.p;pcn++}
-    if(+r.wt){if(w1===null)w1=+r.wt;w2=+r.wt}if(+r.waist){if(x1===null)x1=+r.waist;x2=+r.waist}}
-  var df=function(a,b,u){var c=b-a;return a+" → "+b+" "+u+" ("+(c>0?"+":"")+c.toFixed(1)+")"};
-  $("ckr").innerHTML=row("Days covered",last+" of "+np)+row("Days with logs",logged)+row("All 3 non-negotiables",nn+" days")
-   +row("Stayed strong · best run",cl+" days · "+best)+row("Workouts · walks",wk+" · "+wl)+row("Knee rehab days",kn)+row("Job-hunt actions",jb)
-   +row("Zazen days · minutes",zz+" · "+Math.round(mm))+row("Reading days",rd)+row("Hours invested",(Math.round(hrs*10)/10)+" h")+row("Urges survived",sos)
-   +row("Avg mood · energy",(mn?(md/mn).toFixed(1):"–")+" · "+(ne?(en/ne).toFixed(1):"–"))
-   +row("Avg calories · protein",(kcn?Math.round(kc/kcn):"–")+" · "+(pcn?Math.round(pc/pcn)+" g":"–"))
-   +row("Weight",w1===null?"–":df(w1,w2,"kg"))+row("Waist",x1===null?"–":df(x1,x2,"in"));
-  $("ckn").value=data._ck||"";
-}
-$("ckn").addEventListener("input",function(){data._ck=this.value;save()});
 function renderMeals(){
   var m=(data[key(cur)]||{}).meals||[];
   $("mealList").innerHTML=m.map(function(e,i){return'<div class="rv" style="align-items:center"><span style="color:var(--ink)">'+esc(e.n||"Entry "+(i+1))+'<br><small style="color:var(--mute)">'+Math.round(e.k)+' kcal · P '+e.p+' · C '+e.c+' · F '+e.f+'</small></span><span><button data-md="'+i+'" aria-label="Delete entry" style="border:0;background:none;color:var(--bad);font-size:18px">✕</button></span></div>'}).join("");
@@ -960,26 +933,27 @@ function kchart(){
   $("ksum").textContent=lg.length?"Average "+avg+" kcal"+(goal?" · on target "+on+" of "+lg.length+" logged days. Green = within goal, grey = too low, red = over.":""):"";
 }
 $("krng").addEventListener("click",function(e){var b=e.target.closest("[data-r]");if(!b)return;kr=+b.dataset.r;kchart()});
+var BK=RB;
 var rdI=0,rdP=0,rdFs=19;
-function rdChapter(i,p){var c=RB[i].c,k=0,j;for(j=0;j<c.length;j++)if(c[j][1]<=p)k=j;return k}
+function rdChapter(i,p){var c=BK[i].c,k=0,j;for(j=0;j<c.length;j++)if(c[j][1]<=p)k=j;return k}
 function renderLib(){var d=data._rd||{};
-  $("lib").innerHTML=RB.map(function(b,i){var p=d[b.id];
-    return'<div class="q" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><p style="margin:0"><b>'+esc(b.t)+'</b></p><small>'+esc(b.a)+' · '+b.p.length+' pages'+(p!=null?' · '+Math.round((p+1)/b.p.length*100)+'% read':'')+'</small></div><button data-rb="'+i+'" class="mini" style="flex:none;width:96px">'+(p!=null?'Continue':'Open')+'</button></div>'}).join("")}
+  $("lib").innerHTML=BK.map(function(b,i){var p=d[b.id];
+    return'<div class="q" style="display:flex;justify-content:space-between;align-items:center;gap:6px"><div><p style="margin:0"><b>'+esc(b.t)+'</b></p><small>'+esc(b.a)+' · '+b.p.length+' pages'+(b.u?' · your PDF':'')+(p!=null?' · '+Math.round((p+1)/b.p.length*100)+'% read':'')+'</small></div><div style="display:flex;gap:4px;flex:none"><button data-rb="'+i+'" class="mini" style="flex:none;width:88px">'+(p!=null?'Continue':'Open')+'</button>'+(b.u?'<button data-del="'+i+'" class="mini" style="flex:none;width:40px" aria-label="Delete book">🗑</button>':'')+'</div></div>'}).join("")}
 function rdShow(){
-  var b=RB[rdI],ci=rdChapter(rdI,rdP),ch=b.c[ci],start=ch[1]===rdP,end=rdP===b.p.length-1;
+  var b=BK[rdI],ci=rdChapter(rdI,rdP),ch=b.c[ci],start=ch[1]===rdP,end=rdP===b.p.length-1;
   $("rdp").innerHTML='<div class="fcb">'+esc(b.t)+' · '+esc(ch[0])+'</div>'+(start?'<div class="fct" style="font-size:22px">'+esc(ch[0])+'</div>':'')+'<div class="rdtx" style="font-size:'+rdFs+'px">'+esc(b.p[rdP])+'</div>';
   $("rds").value=rdP;$("rdc").value=ch[1];
   $("rdi").textContent="Page "+(rdP+1)+" of "+b.p.length+" · "+Math.round((rdP+1)/b.p.length*100)+"%"+(end?" · The end 🎉":"");
   (data._rd||(data._rd={}))[b.id]=rdP;save();$("rdr").scrollTop=0;
 }
-function rdGo(n){var b=RB[rdI];rdP=Math.max(0,Math.min(b.p.length-1,n));rdShow()}
-function rdOpen(i){rdI=i;var b=RB[i];rdP=Math.min(b.p.length-1,(data._rd||{})[b.id]||0);
+function rdGo(n){var b=BK[rdI];rdP=Math.max(0,Math.min(b.p.length-1,n));rdShow()}
+function rdOpen(i){rdI=i;var b=BK[i];rdP=Math.min(b.p.length-1,(data._rd||{})[b.id]||0);
   $("rdt").textContent=b.t;$("rds").max=b.p.length-1;
   $("rdc").innerHTML=b.c.map(function(c){return'<option value="'+c[1]+'">'+esc(c[0])+'</option>'}).join("");
   $("rdr").hidden=false;document.body.style.overflow="hidden";rdShow()}
 $("lib").addEventListener("click",function(e){var b=e.target.closest("[data-rb]");if(b)rdOpen(+b.dataset.rb)});
 $("rdn").onclick=function(){rdGo(rdP+1)};$("rdb").onclick=function(){rdGo(rdP-1)};
-$("rdk").onclick=function(){var c=RB[rdI].c,j=rdChapter(rdI,rdP);rdGo(j+1<c.length?c[j+1][1]:RB[rdI].p.length-1)};
+$("rdk").onclick=function(){var c=BK[rdI].c,j=rdChapter(rdI,rdP);rdGo(j+1<c.length?c[j+1][1]:BK[rdI].p.length-1)};
 $("rds").oninput=function(){rdGo(+this.value)};$("rdc").onchange=function(){rdGo(+this.value)};
 $("rdx").onclick=function(){$("rdr").hidden=true;document.body.style.overflow="";renderLib()};
 $("rdf1").onclick=function(){rdFs=Math.max(14,rdFs-2);rdShow()};$("rdf2").onclick=function(){rdFs=Math.min(30,rdFs+2);rdShow()};
